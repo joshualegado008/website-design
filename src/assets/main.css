@@ -647,3 +647,144 @@ body {
   background: var(--primary);
   color: #fff;
 }
+
+
+/* ══════════════════════════════════════════════
+   MOBILE RESPONSIVE STYLES
+══════════════════════════════════════════════ */
+
+/* ── Mobile overlay when sidebar is open ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 199;
+}
+
+@media (max-width: 768px) {
+
+  /* ── Sidebar: hidden off-screen by default ── */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 300;
+    width: 260px;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+  }
+
+  /* ── Main content: full width on mobile ── */
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    padding: 10px 16px;
+  }
+
+  .topbar-title {
+    font-size: 15px;
+  }
+
+  /* ── Page area ── */
+  .page-area {
+    padding: 16px;
+  }
+
+  /* ── Stat cards: 2 per row on mobile ── */
+  .row.g-3 .col-3 {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+
+  /* ── Dashboard panels: stack vertically ── */
+  .row.g-3 .col-7,
+  .row.g-3 .col-5 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ── Profile columns: stack ── */
+  .row.g-3 .col-6 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ── Profile hero ── */
+  .profile-hero {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .profile-hero h5 {
+    font-size: 15px;
+  }
+
+  /* ── Tables: horizontal scroll ── */
+  .panel-body.p-0 {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 550px;
+  }
+
+  /* ── Login page: stack vertically ── */
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .login-left {
+    width: 100%;
+    padding: 32px 24px 24px;
+    min-height: auto;
+  }
+
+  .login-left h4 {
+    font-size: 18px;
+  }
+
+  .login-right {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+
+  /* ── Info rows: wrap on small screens ── */
+  .info-row {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .info-value {
+    text-align: left;
+  }
+
+  /* ── Stat card text ── */
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  /* ── Stat cards: 1 per row on very small screens ── */
+  .row.g-3 .col-3 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}

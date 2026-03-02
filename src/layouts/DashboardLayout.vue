@@ -1,20 +1,14 @@
 <template>
   <div style="display:flex; min-height:100vh;">
 
-    <!-- ══════════════════════════════════════
-         SIDEBAR
-    ══════════════════════════════════════ -->
-    <aside class="sidebar">
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" :class="{ open: sidebarOpen }" @click="sidebarOpen = false"></div>
 
-      <!-- Brand -->
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-brand">
-        <div class="brand-icon">
-          <i class="bi bi-mortarboard-fill"></i>
-        </div>
+        <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <span>AcademicWeb</span>
       </div>
-
-      <!-- User info -->
       <div class="sidebar-user">
         <div class="user-avatar">{{ state.user?.initials }}</div>
         <div class="ms-2" style="overflow:hidden; min-width:0;">
@@ -22,19 +16,12 @@
           <div class="user-role text-capitalize">{{ state.user?.role }}</div>
         </div>
       </div>
-
-      <!-- Nav -->
       <nav class="sidebar-nav">
         <p class="nav-section-label">Main</p>
-
         <button class="s-nav-item" :class="{ active: rn === 'dashboard' }" @click="go('dashboard')">
-          <i class="bi bi-grid-1x2-fill"></i>
-          <span>Dashboard</span>
+          <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
         </button>
-
         <p class="nav-section-label">Academic</p>
-
-        <!-- Student nav items -->
         <template v-if="isStudent">
           <button class="s-nav-item" :class="{ active: rn === 'profile' }" @click="go('profile')">
             <i class="bi bi-person-badge-fill"></i><span>Student Profile</span>
@@ -55,8 +42,6 @@
             <i class="bi bi-clock-fill"></i><span>Scheduling</span>
           </button>
         </template>
-
-        <!-- Faculty nav items -->
         <template v-if="isFaculty">
           <button class="s-nav-item" :class="{ active: rn === 'profile' }" @click="go('profile')">
             <i class="bi bi-person-workspace"></i><span>Faculty Profile</span>
@@ -78,38 +63,29 @@
           </button>
         </template>
       </nav>
-
-      <!-- Sign out button -->
       <div class="sidebar-footer">
         <button class="btn-logout" @click="handleLogout">
-          <i class="bi bi-box-arrow-left"></i>
-          <span>Sign Out</span>
+          <i class="bi bi-box-arrow-left"></i><span>Sign Out</span>
         </button>
       </div>
     </aside>
 
-    <!-- ══════════════════════════════════════
-         MAIN CONTENT
-    ══════════════════════════════════════ -->
     <div class="main-content">
-
-      <!-- Topbar -->
       <header class="topbar">
         <div class="d-flex align-items-center gap-2">
+          <button class="hamburger-btn" @click="sidebarOpen = !sidebarOpen" aria-label="Toggle menu">
+            <i class="bi bi-list"></i>
+          </button>
           <span class="topbar-title">{{ pageTitle }}</span>
-          <span
-            class="badge rounded-pill text-capitalize"
+          <span class="badge rounded-pill text-capitalize"
             :class="isStudent ? 'bg-primary' : 'bg-success'"
-            style="font-size:10px; padding:4px 10px;"
-          >
+            style="font-size:10px; padding:4px 10px;">
             {{ state.user?.role }}
           </span>
         </div>
-
         <div class="topbar-right">
           <button class="topbar-btn" title="Notifications">
-            <i class="bi bi-bell"></i>
-            <span class="notif-dot"></span>
+            <i class="bi bi-bell"></i><span class="notif-dot"></span>
           </button>
           <button class="topbar-btn" title="Settings">
             <i class="bi bi-gear"></i>
@@ -117,8 +93,6 @@
           <div class="topbar-avatar">{{ state.user?.initials }}</div>
         </div>
       </header>
-
-      <!-- Routed page -->
       <div class="page-area">
         <RouterView v-slot="{ Component }">
           <Transition name="fade" mode="out-in">
@@ -132,17 +106,17 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/store/auth.js'
 
-// Destructure directly — state is the reactive object, isStudent/isFaculty are computed refs
 const { state, isStudent, isFaculty, logout } = useAuthStore()
-
 const router = useRouter()
 const route  = useRoute()
-
+const sidebarOpen = ref(false)
 const rn = computed(() => route.name)
+
+watch(rn, () => { sidebarOpen.value = false })
 
 const pageTitle = computed(() => {
   const titles = {
@@ -157,13 +131,26 @@ const pageTitle = computed(() => {
   return titles[route.name] || 'Dashboard'
 })
 
-function go(name) {
-  router.push({ name })
-}
-
-// ── Logout fix: call store logout then navigate ──
-function handleLogout() {
-  logout()          // sets state.user = null
-  router.push('/login')
-}
+function go(name) { router.push({ name }) }
+function handleLogout() { logout(); router.push('/login') }
 </script>
+
+<style scoped>
+.hamburger-btn {
+  display: none;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #fff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .hamburger-btn { display: flex; }
+}
+</style>

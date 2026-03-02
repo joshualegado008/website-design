@@ -5,9 +5,8 @@ import { defaultStudent, defaultFaculty } from '@/data/sampleData.js'
 const state = reactive({ user: null })
 
 export function useAuthStore() {
-  function login(role) {
-    const src = role === 'student' ? defaultStudent : defaultFaculty
-    state.user = { ...src, role }
+  function login(role, userData) {
+    state.user = { ...userData, role }
   }
 
   function logout() {
