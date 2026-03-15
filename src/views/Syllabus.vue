@@ -1,86 +1,144 @@
 <template>
   <div>
-
-    <!-- Page header row -->
-    <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="page-head">
       <div>
-        <h6 class="fw-bold mb-0" style="color:var(--primary)">
-          <i class="bi me-2" :class="isStudent ? 'bi-person-badge-fill' : 'bi-person-workspace'"></i>
-          {{ isStudent ? 'Student Syllabus' : 'Faculty Syllabus — Handled Subjects' }}
+        <h6 class="page-title">
+          <i class="bi me-2" :class="auth.isStudent.value ? 'bi-person-badge-fill' : 'bi-person-workspace'"></i>
+          {{ auth.isStudent.value ? 'My Enrolled Subjects' : 'Handled Subjects' }}
         </h6>
-        <p class="text-muted mb-0 mt-1" style="font-size:12px">
-          {{ isStudent ? 'Your enrolled subjects and their syllabi for this semester.' : 'Subjects assigned to you this semester.' }}
+        <p class="page-sub">
+          {{ auth.isStudent.value
+            ? 'Subjects available for your section this semester.'
+            : 'Subjects assigned to you this semester.' }}
         </p>
       </div>
-
-      <!-- Faculty: add subject -->
-      <button v-if="isFaculty"
-        class="btn btn-sm text-white fw-semibold"
-        style="background:var(--primary); border-color:var(--primary); font-size:12px">
-        <i class="bi bi-plus-lg me-1"></i>Add Subject
-      </button>
-    </div>
-
-    <!-- Filters -->
-    <div class="d-flex gap-2 mb-3">
-      <select class="form-select form-select-sm" style="max-width:180px">
-        <option value="">All Subjects</option>
-      </select>
-      <select class="form-select form-select-sm" style="max-width:150px">
-        <option value="">All Semesters</option>
-        <option>1st Semester</option>
-        <option>2nd Semester</option>
-        <option>Summer</option>
-      </select>
-      <div class="ms-auto input-group input-group-sm" style="max-width:220px">
-        <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
-        <input type="text" class="form-control" placeholder="Search subject..." />
+      <div class="search-wrap">
+        <i class="bi bi-search"></i>
+        <input v-model="search" type="text" placeholder="Search subject…" />
       </div>
     </div>
 
-    <!-- Table -->
     <div class="panel">
-      <div class="panel-header">
+      <div class="panel-head">
         <span class="panel-title">Subject List</span>
-        <span class="badge bg-secondary rounded-pill" style="font-size:11px">0 subjects</span>
+        <span class="count-badge">{{ filtered.length }} subject{{ filtered.length !== 1 ? 's' : '' }}</span>
       </div>
-      <div class="panel-body p-0">
-        <table class="table table-sm table-hover align-middle mb-0" style="font-size:13px">
-          <thead style="background:#f8f9fa;">
+
+      <div v-if="loading" class="empty-state">
+        <i class="bi bi-arrow-repeat spin"></i> Loading…
+      </div>
+      <div v-else-if="filtered.length === 0" class="empty-state">
+        <i class="bi bi-journal-x"></i>
+        <span>No subjects found for your section.</span>
+      </div>
+      <div v-else class="table-wrap">
+        <table>
+          <thead>
             <tr>
-              <th class="ps-4 py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Code</th>
-              <th class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Description</th>
-              <th class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Units</th>
-              <th class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Schedule</th>
-              <th class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">
-                {{ isStudent ? 'Instructor' : 'Section' }}
-              </th>
-              <th class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Room</th>
-              <th class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Status</th>
-              <th v-if="isFaculty" class="py-3 fw-semibold text-muted" style="font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:2px solid #dee2e6">Actions</th>
+              <th class="ps">Code</th>
+              <th>Description</th>
+              <th>Course</th>
+              <th>Units</th>
+              <th>Schedule</th>
+              <th>{{ auth.isStudent.value ? 'Instructor' : 'Section' }}</th>
+              <th>Room</th>
+              <th>{{ auth.isStudent.value ? 'Status' : 'Enrolled' }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td :colspan="isFaculty ? 8 : 7" class="text-center py-5">
-                <div class="text-muted">
-                  <i class="bi bi-journal-x d-block mb-2" style="font-size:2rem; color:#dee2e6"></i>
-                  <div style="font-size:14px; font-weight:600">No subjects found</div>
-                  <div style="font-size:12px" class="mt-1">
-                    {{ isFaculty ? 'No subjects have been assigned yet.' : 'You are not enrolled in any subjects yet.' }}
-                  </div>
-                </div>
+            <tr v-for="s in filtered" :key="s.id">
+              <td class="ps"><strong>{{ s.code }}</strong></td>
+              <td>{{ s.description }}</td>
+              <td>
+                <span class="course-badge" v-if="s.course">{{ s.course }}</span>
+                <span v-else class="muted">—</span>
+              </td>
+              <td class="center">{{ s.units }}</td>
+              <td style="white-space:nowrap">{{ s.schedule || '—' }}</td>
+              <td>{{ auth.isStudent.value ? (s.faculty?.name || '—') : s.section }}</td>
+              <td>{{ s.room || '—' }}</td>
+              <td>
+                <span v-if="auth.isStudent.value" class="badge badge-pass">Enrolled</span>
+                <span v-else>{{ s.enrolled }} students</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
-const { isStudent, isFaculty } = useAuthStore()
+import { supabase } from '@/lib/supabase.js'
+
+const auth    = useAuthStore()
+const loading = ref(true)
+const search  = ref('')
+const rows    = ref([])
+
+onMounted(async () => {
+  const user = auth.state.user
+  const role = auth.state.role
+
+  if (role === 'student') {
+    // Pull subjects from faculty_subjects that match the student's section
+    const { data } = await supabase
+      .from('faculty_subjects')
+      .select('*, faculty:faculty_id(name)')
+      .eq('section', user.section)
+      .order('code')
+    rows.value = data || []
+  } else {
+    // Faculty sees their own assigned subjects
+    const { data } = await supabase
+      .from('faculty_subjects')
+      .select('*')
+      .eq('faculty_id', user.id)
+      .order('code')
+    rows.value = data || []
+  }
+  loading.value = false
+})
+
+const filtered = computed(() => {
+  const q = search.value.toLowerCase()
+  return rows.value.filter(s =>
+    !q ||
+    (s.code || '').toLowerCase().includes(q) ||
+    (s.description || '').toLowerCase().includes(q) ||
+    (s.course || '').toLowerCase().includes(q)
+  )
+})
 </script>
+
+<style scoped>
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.page-title{font-size:14px;font-weight:700;color:#0d3b66;margin:0 0 4px;}
+.page-sub{font-size:12px;color:#6c757d;margin:0;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:7px 12px;min-width:200px;}
+.search-wrap i{color:#6c757d;font-size:13px;}
+.search-wrap input{border:none;outline:none;font-size:13px;font-family:inherit;width:100%;}
+.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;}
+.panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
+.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#e8f4fd;color:#0d3b66;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th.ps{padding-left:20px;}
+td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;vertical-align:middle;}
+td.ps{padding-left:20px;}
+td.center{text-align:center;}
+tr:hover td{background:#f8f9fa;}
+tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
+.badge-pass{background:#f0fff4;color:#198754;}
+.course-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:#e8f4fd;color:#0d3b66;}
+.muted{color:#adb5bd;}
+.empty-state{padding:32px;text-align:center;color:#6c757d;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.empty-state i{font-size:20px;color:#dee2e6;}
+@keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
+</style>
