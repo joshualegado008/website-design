@@ -1,13 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '@/store/auth.js'
-import Login      from '@/views/Login.vue'
-import Dashboard  from '@/views/Dashboard.vue'
-import Profile    from '@/views/Profile.vue'
-import Syllabus   from '@/views/Syllabus.vue'
-import Curriculum from '@/views/Curriculum.vue'
-import Lessons    from '@/views/Lessons.vue'
-import Events     from '@/views/Events.vue'
-import Scheduling from '@/views/Scheduling.vue'
+import Login         from '@/views/Login.vue'
+import Dashboard     from '@/views/Dashboard.vue'
+import Profile       from '@/views/Profile.vue'
+import Syllabus      from '@/views/Syllabus.vue'
+import Curriculum    from '@/views/Curriculum.vue'
+import Lessons       from '@/views/Lessons.vue'
+import Events        from '@/views/Events.vue'
+import Scheduling    from '@/views/Scheduling.vue'
+import SubjectDetail from '@/views/SubjectDetail.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import AdminLayout      from '@/layouts/AdminLayout.vue'
 import AdminDashboard   from '@/views/admin/AdminDashboard.vue'
@@ -25,13 +26,14 @@ const routes = [
     component: DashboardLayout,
     meta: { requiresAuth: true, roles: ['student','faculty'] },
     children: [
-      { path: '',           component: Dashboard,  name: 'dashboard'  },
-      { path: 'profile',    component: Profile,    name: 'profile'    },
-      { path: 'syllabus',   component: Syllabus,   name: 'syllabus'   },
-      { path: 'curriculum', component: Curriculum, name: 'curriculum' },
-      { path: 'lessons',    component: Lessons,    name: 'lessons'    },
-      { path: 'events',     component: Events,     name: 'events'     },
-      { path: 'scheduling', component: Scheduling, name: 'scheduling' },
+      { path: '',                          component: Dashboard,     name: 'dashboard'  },
+      { path: 'profile',                   component: Profile,       name: 'profile'    },
+      { path: 'syllabus',                  component: Syllabus,      name: 'syllabus'   },
+      { path: 'curriculum',                component: Curriculum,    name: 'curriculum' },
+      { path: 'lessons',                   component: Lessons,       name: 'lessons'    },
+      { path: 'events',                    component: Events,        name: 'events'     },
+      { path: 'scheduling',                component: Scheduling,    name: 'scheduling' },
+      { path: 'subject/:code/:section',    component: SubjectDetail, name: 'subject-detail' },
     ]
   },
   {
