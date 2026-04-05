@@ -70,7 +70,7 @@ function handleLogout() {
 </script>
 
 <style scoped>
-.admin-shell{display:flex;height:100vh;overflow:hidden;font-family:'Segoe UI',sans-serif;}
+.admin-shell{display:flex;height:100vh;font-family:'Segoe UI',sans-serif;}
 .admin-sidebar{width:220px;flex-shrink:0;background:#0d3b66;display:flex;flex-direction:column;overflow:hidden;}
 .sidebar-brand{padding:16px 14px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:10px;}
 .brand-icon{width:30px;height:30px;background:#e9a825;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#0d3b66;font-size:15px;flex-shrink:0;}
@@ -88,7 +88,7 @@ function handleLogout() {
 .sidebar-footer{padding:8px;border-top:1px solid rgba(255,255,255,0.1);}
 .btn-logout{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;color:rgba(255,255,255,0.4);font-size:12px;font-weight:600;background:none;border:none;width:100%;cursor:pointer;font-family:inherit;}
 .btn-logout:hover{background:rgba(255,50,50,0.15);color:#ff6b6b;}
-.admin-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f4f6f9;}
+.admin-main{flex:1;display:flex;flex-direction:column;min-width:0;background:#f4f6f9;}
 .admin-topbar{background:#fff;border-bottom:1px solid #dee2e6;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-left{display:flex;align-items:center;gap:12px;}
 .page-title{font-size:16px;font-weight:700;color:#0d3b66;}
