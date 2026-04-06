@@ -61,11 +61,11 @@
           <button class="s-nav-item" :class="{ active: rn === 'scheduling' }" @click="go('scheduling')">
             <i class="bi bi-clock-fill"></i><span>Scheduling</span>
           </button>
+          <p class="nav-section-label">Management</p>
+          <button class="s-nav-item" :class="{ active: rn === 'faculty-students' }" @click="go('faculty-students')">
+            <i class="bi bi-people-fill"></i><span>Students</span>
+          </button>
         </template>
-        <p class="nav-section-label">Management</p>
-        <button class="s-nav-item" :class="{ active: rn === 'users' }" @click="go('users')">
-          <i class="bi bi-people-fill"></i><span>Users</span>
-        </button>
       </nav>
       <div class="sidebar-footer">
         <button class="btn-logout" @click="handleLogout">
@@ -124,14 +124,14 @@ watch(rn, () => { sidebarOpen.value = false })
 
 const pageTitle = computed(() => {
   const titles = {
-    dashboard:  'Dashboard',
-    profile:    isStudent.value ? 'Student Profile' : 'Faculty Profile',
-    syllabus:   'Syllabus',
-    curriculum: 'Curriculum',
-    lessons:    'Lessons',
-    events:     'Events',
-    scheduling: 'Scheduling',
-    users:      'Users',
+    dashboard:        'Dashboard',
+    profile:          isStudent.value ? 'Student Profile' : 'Faculty Profile',
+    syllabus:         'Syllabus',
+    curriculum:       'Curriculum',
+    lessons:          'Lessons',
+    events:           'Events',
+    scheduling:       'Scheduling',
+    'faculty-students': 'Students',
   }
   return titles[route.name] || 'Dashboard'
 })

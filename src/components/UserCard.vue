@@ -1,13 +1,5 @@
 <template>
-  <!--
-    Part 3 — CHILD COMPONENT: UserCard.vue
-    ────────────────────────────────────────
-    • Receives a single `user` object via PROPS from parent (Users.vue)
-    • Never touches the store directly
-    • Sends events UP to the parent using $emit
-    Data flow:  Users.vue  →  :user="user"  →  UserCard.vue
-    Events:     UserCard.vue  →  @view / @toggle-status / @remove  →  Users.vue
-  -->
+  
   <div class="user-card" :class="{ inactive: user.status === 'inactive' }">
 
     <!-- Header: avatar + status -->
@@ -71,17 +63,12 @@
 </template>
 
 <script setup>
-/**
- * PROPS — data received FROM the parent (Users.vue)
- * The child only knows what is passed in. It does not import the store.
- */
+
 defineProps({
   user: {
     type: Object,
     required: true,
-    // Shape: { id, name, initials, role, email, phone, status, avatar,
-    //   program?, yearLevel?, section?, gpa?,          (student)
-    //   department?, position?, yearsOfService? }      (faculty)
+    
   }
 })
 

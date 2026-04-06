@@ -1,11 +1,4 @@
-/**
- * Part 3: Props vs State
- * ──────────────────────
- * This store holds the SHARED STATE for the Users page.
- * - Parent (Users.vue) reads from this store
- * - Parent passes slices of state DOWN to children as PROPS
- * - Children (UserCard.vue) receive props and emit events UP
- */
+
 
 import { reactive, computed } from 'vue'
 import { students as sampleStudents, faculty as sampleFaculty } from '@/data/sampleData.js'
@@ -62,7 +55,7 @@ export function useUsersStore() {
   const activeCount = computed(() => state.users.filter(u => u.status === 'active').length)
   const totalCount  = computed(() => state.users.length)
 
-  // Mutations — these are the only way to modify state
+  // Mutations 
   function addUser(user) {
     state.users.push({ ...user, id: user.id || `USR-${Date.now()}` })
   }

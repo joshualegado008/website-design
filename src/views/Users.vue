@@ -1,10 +1,5 @@
 <template>
   <div>
-
-    <!--
-      Part 3: Props vs State — Concept Banner
-      Shows the data flow visually for reference
-    -->
     <div class="concept-bar">
       <div class="cb-box cb-state">
         <div class="cb-tag">STATE</div>
