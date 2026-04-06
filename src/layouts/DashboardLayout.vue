@@ -62,6 +62,10 @@
             <i class="bi bi-clock-fill"></i><span>Scheduling</span>
           </button>
         </template>
+        <p class="nav-section-label">Management</p>
+        <button class="s-nav-item" :class="{ active: rn === 'users' }" @click="go('users')">
+          <i class="bi bi-people-fill"></i><span>Users</span>
+        </button>
       </nav>
       <div class="sidebar-footer">
         <button class="btn-logout" @click="handleLogout">
@@ -126,7 +130,8 @@ const pageTitle = computed(() => {
     curriculum: 'Curriculum',
     lessons:    'Lessons',
     events:     'Events',
-    scheduling: 'Scheduling'
+    scheduling: 'Scheduling',
+    users:      'Users',
   }
   return titles[route.name] || 'Dashboard'
 })

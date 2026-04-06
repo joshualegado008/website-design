@@ -15,7 +15,7 @@
       </div>
       <nav class="sidebar-nav">
         <router-link to="/admin"          class="nav-item" :class="{active:route.name==='admin-dashboard'}"><i class="bi bi-grid-1x2-fill"></i> Dashboard</router-link>
-        <router-link to="/admin/students" class="nav-item" :class="{active:route.name==='admin-students'}"><i class="bi bi-people-fill"></i> Students</router-link>
+        <router-link to="/admin/students" class="nav-item" :class="{active:route.name==='admin-students'||route.name==='admin-student-detail'}"><i class="bi bi-people-fill"></i> Students</router-link>
         <router-link to="/admin/faculty"  class="nav-item" :class="{active:route.name==='admin-faculty'}"><i class="bi bi-person-workspace"></i> Faculty</router-link>
         <router-link to="/admin/subjects" class="nav-item" :class="{active:route.name==='admin-subjects'}"><i class="bi bi-journals"></i> Subjects</router-link>
         <router-link to="/admin/events"   class="nav-item" :class="{active:route.name==='admin-events'}"><i class="bi bi-calendar-event-fill"></i> Events</router-link>
@@ -45,21 +45,23 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth.js'
 
 const route  = useRoute()
 const router = useRouter()
 const auth   = useAuthStore()
+const sidebarOpen = ref(true)
 
 const titles = {
-  'admin-dashboard': 'Dashboard',
-  'admin-students':  'Manage Students',
-  'admin-faculty':   'Manage Faculty',
-  'admin-subjects':  'Manage Subjects',
-  'admin-events':    'Manage Events',
-  'admin-activity':  'Activity Log',
+  'admin-dashboard':      'Dashboard',
+  'admin-students':       'Manage Students',
+  'admin-student-detail': 'Student Profile',
+  'admin-faculty':        'Manage Faculty',
+  'admin-subjects':       'Manage Subjects',
+  'admin-events':         'Manage Events',
+  'admin-activity':       'Activity Log',
 }
 const pageTitle = computed(() => titles[route.name] || 'Admin')
 
@@ -70,8 +72,46 @@ function handleLogout() {
 </script>
 
 <style scoped>
-.admin-shell{display:flex;height:100vh;font-family:'Segoe UI',sans-serif;}
-.admin-sidebar{width:220px;flex-shrink:0;background:#0d3b66;display:flex;flex-direction:column;overflow:hidden;}
+/* ─── KEY FIX: NO overflow:hidden on shell or main ───────────
+   overflow:hidden creates a new stacking context which traps
+   position:fixed children inside the element instead of the
+   full viewport. Only admin-content (the scroll area) gets
+   overflow-y:auto. The sidebar clips itself fine with its own
+   overflow:hidden which does NOT affect fixed positioning of
+   siblings/children outside it.
+────────────────────────────────────────────────────────────── */
+.admin-shell {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  /* overflow:hidden REMOVED — was breaking position:fixed modals */
+}
+
+.admin-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #0d3b66;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* sidebar clips its OWN content, does not affect fixed */
+}
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f4f6f9;
+  /* overflow:hidden REMOVED — was trapping position:fixed inside column */
+}
+
+.admin-content {
+  flex: 1;
+  overflow-y: auto; /* only this scrolls */
+  padding: 24px;
+}
+
+/* ─── Rest of styles unchanged ─────────────────────────────── */
 .sidebar-brand{padding:16px 14px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:10px;}
 .brand-icon{width:30px;height:30px;background:#e9a825;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#0d3b66;font-size:15px;flex-shrink:0;}
 .brand-name{font-size:13px;font-weight:700;color:#fff;display:block;line-height:1;}
@@ -88,12 +128,10 @@ function handleLogout() {
 .sidebar-footer{padding:8px;border-top:1px solid rgba(255,255,255,0.1);}
 .btn-logout{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;color:rgba(255,255,255,0.4);font-size:12px;font-weight:600;background:none;border:none;width:100%;cursor:pointer;font-family:inherit;}
 .btn-logout:hover{background:rgba(255,50,50,0.15);color:#ff6b6b;}
-.admin-main{flex:1;display:flex;flex-direction:column;min-width:0;background:#f4f6f9;}
 .admin-topbar{background:#fff;border-bottom:1px solid #dee2e6;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-left{display:flex;align-items:center;gap:12px;}
 .page-title{font-size:16px;font-weight:700;color:#0d3b66;}
 .hamburger{display:none;border:none;background:none;font-size:20px;cursor:pointer;color:#0d3b66;}
 .admin-chip{display:flex;align-items:center;gap:5px;padding:4px 12px;background:rgba(233,168,37,0.15);border:1px solid rgba(233,168,37,0.3);border-radius:20px;font-size:10px;font-weight:700;color:#b8890e;}
-.admin-content{flex:1;overflow-y:auto;padding:24px;}
 @media(max-width:768px){.admin-sidebar{display:none;}.hamburger{display:block;}}
 </style>

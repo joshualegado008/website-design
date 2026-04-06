@@ -293,8 +293,9 @@
     </template>
 
     <!-- ══ MODAL ══ -->
-    <div v-if="showModal" class="modal-overlay" @click.self="showModal=false">
-      <div class="modal">
+    <Teleport to="body">
+    <div v-if="showModal" @click.self="showModal=false" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99999;padding:20px;box-sizing:border-box;">
+      <div style="background:#fff;border-radius:12px;width:100%;max-width:640px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
         <div class="modal-head">
           <span>{{ modalTitle }}</span>
           <button @click="showModal=false"><i class="bi bi-x-lg"></i></button>
@@ -394,6 +395,7 @@
         </div>
       </div>
     </div>
+    </Teleport>
 
   </div>
 </template>
@@ -636,7 +638,7 @@ const skClass = c => ({ Academic:'sk-a', Sports:'sk-s', Arts:'sk-art', Technolog
 const skIcon  = c => ({ Academic:'bi bi-book', Sports:'bi bi-trophy', Arts:'bi bi-palette', Technology:'bi bi-cpu', Leadership:'bi bi-person-badge', Other:'bi bi-star' }[c]||'bi bi-star')
 </script>
 
-<style scoped>
+<style>
 .page-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .back-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:#fff;border:1px solid #dee2e6;border-radius:8px;font-size:12px;font-weight:600;color:#0d3b66;cursor:pointer;font-family:inherit;}
 .back-btn:hover{background:#e8f4fd;}
@@ -725,10 +727,16 @@ tr:last-child td{border-bottom:none;}
 
 /* Modal — fixed centered, no whitespace */
 .modal-overlay{
-  position:fixed;top:0;left:0;right:0;bottom:0;
+  position:fixed;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  width:100vw !important;
+  height:100vh !important;
   background:rgba(0,0,0,0.5);
   display:flex;align-items:center;justify-content:center;
-  z-index:9999;padding:20px;
+  z-index:99999;padding:20px;
 }
 .modal{
   background:#fff;border-radius:12px;width:100%;max-width:640px;

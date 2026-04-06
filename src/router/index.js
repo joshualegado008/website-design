@@ -9,6 +9,7 @@ import Lessons       from '@/views/Lessons.vue'
 import Events        from '@/views/Events.vue'
 import Scheduling    from '@/views/Scheduling.vue'
 import SubjectDetail from '@/views/SubjectDetail.vue'
+import Users         from '@/views/Users.vue'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import AdminLayout          from '@/layouts/AdminLayout.vue'
 import AdminDashboard       from '@/views/admin/AdminDashboard.vue'
@@ -35,6 +36,7 @@ const routes = [
       { path: 'events',                 component: Events,        name: 'events'         },
       { path: 'scheduling',             component: Scheduling,    name: 'scheduling'     },
       { path: 'subject/:code/:section', component: SubjectDetail, name: 'subject-detail' },
+      { path: 'users',                  component: Users,         name: 'users'          },
     ]
   },
   {
