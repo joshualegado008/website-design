@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '@/store/auth.js'
+import HomeView      from '@/views/HomeView.vue'
 import Login         from '@/views/Login.vue'
 import Dashboard     from '@/views/Dashboard.vue'
 import Profile       from '@/views/Profile.vue'
@@ -20,7 +21,7 @@ import AdminEvents          from '@/views/admin/AdminEvents.vue'
 import AdminActivityLog     from '@/views/admin/AdminActivityLog.vue'
 
 const routes = [
-  { path: '/', redirect: '/login' },
+  { path: '/', component: HomeView, name: 'home', meta: { public: true } },
   { path: '/login', component: Login, meta: { public: true } },
   {
     path: '/dashboard',
@@ -35,7 +36,6 @@ const routes = [
       { path: 'events',                 component: Events,        name: 'events'         },
       { path: 'scheduling',             component: Scheduling,    name: 'scheduling'     },
       { path: 'subject/:code/:section', component: SubjectDetail, name: 'subject-detail' },
-      { path: 'students',               component: () => import('@/views/FacultyStudents.vue'), name: 'faculty-students', meta: { roles: ['faculty'] } },
     ]
   },
   {
@@ -58,7 +58,7 @@ const router = createRouter({ history: createWebHashHistory(), routes })
 
 router.beforeEach((to) => {
   const auth = useAuthStore()
-  if (!to.meta.public && !auth.isLoggedIn.value) return '/login'
+  if (to.meta.requiresAuth && !auth.isLoggedIn.value) return '/login'
   if (to.path === '/login' && auth.isLoggedIn.value)
     return auth.isAdmin.value ? '/admin' : '/dashboard'
   if (to.meta.roles && !to.meta.roles.includes(auth.state.role))
