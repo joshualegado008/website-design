@@ -308,11 +308,48 @@
               <div class="field"><label>Subject Code *</label><input v-model="mf.code" placeholder="CS301" /></div>
               <div class="field"><label>Description *</label><input v-model="mf.description" placeholder="Data Structures" /></div>
               <div class="field"><label>Units</label><input v-model.number="mf.units" type="number" min="1" max="6" /></div>
-              <div class="field"><label>Midterm</label><input v-model.number="mf.midterm" type="number" min="0" max="100" /></div>
-              <div class="field"><label>Finals</label><input v-model.number="mf.finals" type="number" min="0" max="100" /></div>
-              <div class="field"><label>Final Grade</label><input v-model="mf.final_grade" placeholder="1.5" /></div>
+              <div class="field">
+                <label>Midterm <span style="color:#adb5bd;font-weight:400;text-transform:none;letter-spacing:0">(0–100)</span></label>
+                <input v-model.number="mf.midterm" type="number" min="0" max="100"
+                  @input="mf.midterm = clampGrade(mf.midterm)"
+                  @blur="mf.midterm = clampGrade(mf.midterm); autoComputeGrade()"
+                  placeholder="Enter midterm score" />
+                <div class="score-bar-wrap" v-if="mf.midterm !== null && mf.midterm !== ''">
+                  <div class="score-bar-track">
+                    <div class="score-bar-fill" :style="{width: mf.midterm + '%', background: scoreColor(mf.midterm)}"></div>
+                  </div>
+                  <span class="score-pct" :style="{color: scoreColor(mf.midterm)}">{{ mf.midterm }}%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Finals <span style="color:#adb5bd;font-weight:400;text-transform:none;letter-spacing:0">(0–100)</span></label>
+                <input v-model.number="mf.finals" type="number" min="0" max="100"
+                  @input="mf.finals = clampGrade(mf.finals)"
+                  @blur="mf.finals = clampGrade(mf.finals); autoComputeGrade()"
+                  placeholder="Enter finals score" />
+                <div class="score-bar-wrap" v-if="mf.finals !== null && mf.finals !== ''">
+                  <div class="score-bar-track">
+                    <div class="score-bar-fill" :style="{width: mf.finals + '%', background: scoreColor(mf.finals)}"></div>
+                  </div>
+                  <span class="score-pct" :style="{color: scoreColor(mf.finals)}">{{ mf.finals }}%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Final Grade <span style="color:#adb5bd;font-weight:400;text-transform:none;letter-spacing:0">(auto-computed)</span></label>
+                <input v-model="mf.final_grade" placeholder="e.g. 1.5" readonly style="background:#f8f9fa;color:#1a6b2e;font-weight:700;cursor:default;" />
+              </div>
               <div class="field"><label>Remarks</label>
                 <select v-model="mf.remarks"><option>Passed</option><option>Failed</option><option>Incomplete</option><option>Pending</option></select>
+              </div>
+            </div>
+            <div class="grade-summary" v-if="mf.midterm !== null && mf.finals !== null && mf.midterm !== '' && mf.finals !== ''">
+              <div class="grade-summary-row">
+                <span>Average Score</span>
+                <strong>{{ ((Number(mf.midterm) + Number(mf.finals)) / 2).toFixed(1) }}%</strong>
+              </div>
+              <div class="grade-summary-row">
+                <span>Grade Equivalent</span>
+                <strong style="color:#1a6b2e;font-size:15px">{{ mf.final_grade || '—' }}</strong>
               </div>
             </div>
           </template>
@@ -637,6 +674,45 @@ const sevCls = s => ({ Minor:'bminor', Major:'bmajor', Serious:'bserious' }[s]||
 const vstCls = s => ({ Pending:'bprog', Resolved:'bp', Appealing:'bminor' }[s]||'bprog')
 const skClass = c => ({ Academic:'sk-a', Sports:'sk-s', Arts:'sk-art', Technology:'sk-t', Leadership:'sk-l', Other:'sk-o' }[c]||'sk-o')
 const skIcon  = c => ({ Academic:'bi bi-book', Sports:'bi bi-trophy', Arts:'bi bi-palette', Technology:'bi bi-cpu', Leadership:'bi bi-person-badge', Other:'bi bi-star' }[c]||'bi bi-star')
+
+// ── Grade helpers ─────────────────────────────────────────────
+function clampGrade(val) {
+  if (val === null || val === '' || val === undefined) return val
+  const n = Number(val)
+  if (isNaN(n)) return 0
+  return Math.min(100, Math.max(0, Math.round(n)))
+}
+
+function scoreColor(val) {
+  const n = Number(val)
+  if (n >= 90) return '#198754'  // green — excellent
+  if (n >= 80) return '#1a6b2e'  // dark green — good
+  if (n >= 75) return '#d4a017'  // gold — passing
+  return '#dc3545'               // red — failing
+}
+
+// PH grading: average of midterm+finals → GWA equivalent
+function autoComputeGrade() {
+  const mid = Number(mf.value.midterm)
+  const fin = Number(mf.value.finals)
+  if (isNaN(mid) || isNaN(fin) || mf.value.midterm === '' || mf.value.finals === '') return
+  const avg = (mid + fin) / 2
+
+  let equiv, remarks
+  if      (avg >= 97) { equiv = '1.00'; remarks = 'Passed' }
+  else if (avg >= 94) { equiv = '1.25'; remarks = 'Passed' }
+  else if (avg >= 91) { equiv = '1.50'; remarks = 'Passed' }
+  else if (avg >= 88) { equiv = '1.75'; remarks = 'Passed' }
+  else if (avg >= 85) { equiv = '2.00'; remarks = 'Passed' }
+  else if (avg >= 82) { equiv = '2.25'; remarks = 'Passed' }
+  else if (avg >= 79) { equiv = '2.50'; remarks = 'Passed' }
+  else if (avg >= 76) { equiv = '2.75'; remarks = 'Passed' }
+  else if (avg >= 75) { equiv = '3.00'; remarks = 'Passed' }
+  else                { equiv = '5.00'; remarks = 'Failed' }
+
+  mf.value.final_grade = equiv
+  mf.value.remarks     = remarks
+}
 </script>
 
 <style>
@@ -767,4 +843,16 @@ tr:last-child td{border-bottom:none;}
 
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 @media(max-width:768px){.info-grid{grid-template-columns:1fr;}.tabs{flex-wrap:nowrap;overflow-x:auto;}}
+
+/* Grade score bars */
+.score-bar-wrap{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.score-bar-track{flex:1;height:6px;background:#f0f0f0;border-radius:99px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:99px;transition:width .3s ease, background .3s ease;}
+.score-pct{font-size:11px;font-weight:700;min-width:36px;text-align:right;}
+
+/* Grade summary box */
+.grade-summary{margin-top:14px;padding:12px 16px;background:#f0fff4;border:1px solid #c3e6cb;border-radius:9px;display:flex;gap:20px;}
+.grade-summary-row{display:flex;flex-direction:column;gap:3px;}
+.grade-summary-row span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#6c757d;}
+.grade-summary-row strong{font-size:14px;color:#212529;}
 </style>
