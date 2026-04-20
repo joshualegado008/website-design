@@ -197,7 +197,7 @@ const summaryCards = computed(() => {
     const inprog = rows.value.filter(c => c.status === 'In Progress').length
     const pct    = total ? Math.round((done / total) * 100) : 0
     return [
-      { label:'Total Subjects', value:total,   icon:'bi bi-journals',        bg:'#e8f4fd', color:'#0d3b66' },
+      { label:'Total Subjects', value:total,   icon:'bi bi-journals',        bg:'#eaf4ec', color:'#1a6b2e' },
       { label:'Completed',      value:done,    icon:'bi bi-check2-circle',   bg:'#f0fff4', color:'#198754' },
       { label:'In Progress',    value:inprog,  icon:'bi bi-hourglass-split', bg:'#fff8e1', color:'#b8890e' },
       { label:'Completion',     value:pct+'%', icon:'bi bi-graph-up',        bg:'#f5f0ff', color:'#6f42c1' },
@@ -205,7 +205,7 @@ const summaryCards = computed(() => {
   }
   const totalUnits = rows.value.reduce((a, b) => a + (b.units || 0), 0)
   return [
-    { label:'Assigned Subjects', value:total,      icon:'bi bi-journals', bg:'#e8f4fd', color:'#0d3b66' },
+    { label:'Assigned Subjects', value:total,      icon:'bi bi-journals', bg:'#eaf4ec', color:'#1a6b2e' },
     { label:'Total Units',       value:totalUnits, icon:'bi bi-stack',    bg:'#f0fff4', color:'#198754' },
   ]
 })
@@ -214,9 +214,9 @@ const progressItems = computed(() => {
   const total = rows.value.length || 1
   return [
     { label:'Completed',     color:'#198754', count: rows.value.filter(c => c.status === 'Completed').length },
-    { label:'In Progress',   color:'#e9a825', count: rows.value.filter(c => c.status === 'In Progress').length },
-    { label:'Enrolled',      color:'#0d3b66', count: rows.value.filter(c => c.status === 'Enrolled').length },
-    { label:'Not Yet Taken', color:'#dee2e6', count: rows.value.filter(c => c.status === 'Not Yet Taken').length },
+    { label:'In Progress',   color:'#d4a017', count: rows.value.filter(c => c.status === 'In Progress').length },
+    { label:'Enrolled',      color:'#1a6b2e', count: rows.value.filter(c => c.status === 'Enrolled').length },
+    { label:'Not Yet Taken', color:'#d6e4d8', count: rows.value.filter(c => c.status === 'Not Yet Taken').length },
   ].filter(s => s.count > 0).map(s => ({ ...s, pct: Math.round((s.count / total) * 100) }))
 })
 </script>
@@ -224,18 +224,18 @@ const progressItems = computed(() => {
 <style scoped>
 .loading-state{padding:60px;text-align:center;color:#6c757d;font-size:13px;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;}
-.stat-card{background:#fff;border:1px solid #dee2e6;border-radius:10px;padding:16px;display:flex;align-items:flex-start;gap:12px;}
+.stat-card{background:#fff;border:1px solid #d6e4d8;border-radius:10px;padding:16px;display:flex;align-items:flex-start;gap:12px;}
 .stat-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.stat-val{font-size:22px;font-weight:700;color:#0d3b66;line-height:1;}
+.stat-val{font-size:22px;font-weight:700;color:#1a6b2e;line-height:1;}
 .stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6c757d;margin-top:3px;}
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
-.section-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#e8f4fd;border-radius:20px;font-size:11px;font-weight:600;color:#0d3b66;}
+.panel-title{font-size:13px;font-weight:700;color:#1a6b2e;}
+.section-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#eaf4ec;border-radius:20px;font-size:11px;font-weight:600;color:#1a6b2e;}
 .panel-body{padding:14px 16px;}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #d6e4d8;background:#f8f9fa;text-align:left;white-space:nowrap;}
 th.ps{padding-left:18px;}
 td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;vertical-align:middle;}
 td.ps{padding-left:18px;}
@@ -244,14 +244,14 @@ tr:hover td{background:#f8f9fa;}
 tr:last-child td{border-bottom:none;}
 .badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
 .badge-pass  {background:#f0fff4;color:#198754;}
-.badge-prog  {background:#e8f4fd;color:#0d3b66;}
+.badge-prog  {background:#eaf4ec;color:#1a6b2e;}
 .badge-enroll{background:#f0fff4;color:#0d6efd;}
 .badge-notyet{background:#f8f9fa;color:#6c757d;}
-.course-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:#e8f4fd;color:#0d3b66;}
-.days-badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:600;background:#e8f4fd;color:#0d3b66;}
+.course-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:#eaf4ec;color:#1a6b2e;}
+.days-badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:600;background:#eaf4ec;color:#1a6b2e;}
 .muted{color:#adb5bd;}
 .empty-state{padding:40px;display:flex;align-items:center;justify-content:center;gap:14px;color:#6c757d;font-size:13px;}
-.empty-state i{font-size:28px;color:#dee2e6;}
+.empty-state i{font-size:28px;color:#d6e4d8;}
 .prog-row{margin-bottom:14px;}
 .prog-label-row{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#212529;margin-bottom:5px;}
 .prog-bar{height:6px;background:#f0f0f0;border-radius:99px;overflow:hidden;}

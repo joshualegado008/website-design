@@ -134,11 +134,16 @@
               <div class="step-text">{{ s }}</div>
             </div>
           </div>
+          <button class="btn-track" @click="$router.push('/apply/track')">
+            <i class="bi bi-search"></i>
+            Track Application Status
+            <i class="bi bi-arrow-right"></i>
+          </button>
         </div>
         <div class="apply-card">
           <h3>Start Your Application</h3>
           <p>Academic Year 2025–2026 admissions are now open.</p>
-          <div class="apply-form">
+          <div class="apply-form" v-if="!appSent">
             <div class="af-field"><label>Full Name</label><input v-model="appForm.name" type="text" placeholder="Juan dela Cruz" /></div>
             <div class="af-field"><label>Email Address</label><input v-model="appForm.email" type="email" placeholder="juan@email.com" /></div>
             <div class="af-field">
@@ -149,10 +154,24 @@
               </select>
             </div>
             <div class="af-field"><label>Phone Number</label><input v-model="appForm.phone" type="text" placeholder="09XXXXXXXXX" /></div>
-            <button class="apply-submit" @click="submitApp">
-              <span v-if="appSent"><i class="bi bi-check-circle-fill"></i> Application Sent!</span>
+            <div v-if="appError" style="color:#c0392b;font-size:12px;background:#fff0f0;padding:10px 12px;border-radius:7px;border:1px solid #f5c6cb;">{{ appError }}</div>
+            <button class="apply-submit" @click="submitApp" :disabled="appLoading">
+              <span v-if="appLoading"><i class="bi bi-arrow-repeat" style="animation:spin .7s linear infinite;display:inline-block;"></i> Submitting…</span>
               <span v-else><i class="bi bi-send-fill"></i> Submit Application</span>
             </button>
+          </div>
+          <div v-else class="app-success">
+            <div class="app-success-icon"><i class="bi bi-check-circle-fill"></i></div>
+            <h4>Application Submitted!</h4>
+            <p>Your application is now being reviewed. Use your tracking code to check your status.</p>
+            <div class="tracking-box">
+              <div class="tb-label">Your Tracking Code</div>
+              <div class="tb-code">{{ trackingCode }}</div>
+              <div class="tb-note">Save this code — you'll need it to track your application and submit documents.</div>
+            </div>
+            <a href="#/apply/track" class="track-link" @click.prevent="$router.push('/apply/track')">
+              <i class="bi bi-search"></i> Track My Application
+            </a>
           </div>
         </div>
       </div>
@@ -183,11 +202,11 @@
           <h2 class="section-title">Visit Our Campus</h2>
           <div class="contact-item">
             <i class="bi bi-geo-alt-fill"></i>
-            <div><div class="ci-label">Address</div><div class="ci-val">Katapatan Village, Brgy. Banay-Banay, Cabuyao, Laguna 4025</div></div>
+            <div><div class="ci-label">Address</div><div class="ci-val">Gov. D.S. Mangubat Ave., Cabuyao City, Laguna 4025</div></div>
           </div>
           <div class="contact-item">
             <i class="bi bi-telephone-fill"></i>
-            <div><div class="ci-label">Phone</div><div class="ci-val">+63 49 832 3033</div></div>
+            <div><div class="ci-label">Phone</div><div class="ci-val">(049) 123-4567 · 0917-123-4567</div></div>
           </div>
           <div class="contact-item">
             <i class="bi bi-envelope-fill"></i>
@@ -198,7 +217,7 @@
             <div><div class="ci-label">Office Hours</div><div class="ci-val">Mon – Fri: 8:00 AM – 5:00 PM</div></div>
           </div>
           <div class="social-links">
-            <a href="https://www.facebook.com/ucpncofficial" class="social-btn"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
             <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
             <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
             <a href="#" class="social-btn"><i class="bi bi-envelope"></i></a>
@@ -248,7 +267,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Pamantasan ng Cabuyao. All rights reserved.</span>
+        <span>© 2025 Pamantasan ng Cabuyao. All rights reserved.</span>
         <span>Cabuyao City, Laguna, Philippines</span>
       </div>
     </footer>
@@ -259,6 +278,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+import { supabase } from '@/lib/supabase.js'
 
 const router = useRouter()
 
@@ -327,7 +347,7 @@ onMounted(() => {
   script.onload = () => {
     const L = window.L
     leafletMap = L.map('pnc-map', { zoomControl: true, scrollWheelZoom: false })
-      .setView([14.2595362, 121.1338648,20], 16)
+      .setView([14.2584, 121.1333], 16)
 
     // OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -350,7 +370,7 @@ onMounted(() => {
       popupAnchor: [0, -38]
     })
 
-    L.marker([14.2595362, 121.1338648,20], { icon })
+    L.marker([14.2584, 121.1333], { icon })
       .addTo(leafletMap)
       .bindPopup(`
         <div style="font-family:Inter,sans-serif; min-width:180px;">
@@ -405,15 +425,39 @@ const applySteps = [
 
 const allPrograms = ['BS Computer Science','BS Information Technology','BS Computer Engineering','BS Electronics Engineering','BS Business Administration','BS Accountancy','BS Education','BS Psychology','BS Nursing','AB Communication']
 
-const appForm = ref({ name: '', email: '', program: '', phone: '' })
-const appSent = ref(false)
-function submitApp() {
-  if (!appForm.value.name || !appForm.value.email) return
-  appSent.value = true
-  setTimeout(() => {
-    appSent.value = false
-    appForm.value = { name: '', email: '', program: '', phone: '' }
-  }, 3000)
+const appForm    = ref({ name: '', email: '', phone: '', program: '' })
+const appSent    = ref(false)
+const appLoading = ref(false)
+const appError   = ref('')
+const trackingCode = ref('')
+
+async function submitApp() {
+  if (!appForm.value.name || !appForm.value.email || !appForm.value.program) {
+    appError.value = 'Please fill in Name, Email and Program.'
+    return
+  }
+  appLoading.value = true
+  appError.value   = ''
+  try {
+    const code = 'PNC-' + Math.random().toString(36).substring(2,8).toUpperCase()
+    const { error } = await supabase.from('applications').insert({
+      name:          appForm.value.name.trim(),
+      email:         appForm.value.email.trim().toLowerCase(),
+      phone:         appForm.value.phone.trim(),
+      program:       appForm.value.program,
+      status:        'pending',
+      tracking_code: code
+    })
+    if (error) throw error
+    trackingCode.value = code
+    appSent.value      = true
+    appForm.value      = { name: '', email: '', phone: '', program: '' }
+  } catch (e) {
+    appError.value = e.message || 'Submission failed. Please try again.'
+    console.error('Admissions insert error:', e)
+  } finally {
+    appLoading.value = false
+  }
 }
 
 const news = [
@@ -439,7 +483,7 @@ a { text-decoration: none; }
 .tb-apply { background: rgba(212,160,23,.2); color: #f0c832 !important; border: 1px solid rgba(212,160,23,.4); }
 .tb-apply:hover { background: rgba(212,160,23,.35) !important; }
 .tb-login { padding: 5px 14px; background: #d4a017; color: #0f3d1c; border: none; border-radius: 5px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all .15s; font-family: inherit; }
-.tb-login:hover { background: #e8b820; transform: translateY(-1px); }
+.tb-login:hover { background: #d4a017; transform: translateY(-1px); }
 
 /* NAVBAR */
 .navbar { position: sticky; top: 0; z-index: 1000; background: #1a6b2e; display: flex; align-items: center; padding: 0 40px; height: 72px; gap: 24px; transition: background .3s, box-shadow .3s; }
@@ -475,7 +519,7 @@ a { text-decoration: none; }
 .hero-sub { font-size: clamp(14px, 2vw, 17px); color: rgba(255,255,255,.8); line-height: 1.7; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .hero-btn-primary { padding: 14px 30px; background: #d4a017; color: #0f3d1c; border: none; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; font-family: inherit; }
-.hero-btn-primary:hover { background: #e8b820; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,160,23,.35); }
+.hero-btn-primary:hover { background: #d4a017; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,160,23,.35); }
 .hero-btn-outline { padding: 14px 30px; background: rgba(255,255,255,.12); color: #fff; border: 2px solid rgba(255,255,255,.4); border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; font-family: inherit; }
 .hero-btn-outline:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.7); }
 .hero-dots { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 2; }
@@ -541,6 +585,8 @@ a { text-decoration: none; }
 .apply-step { display: flex; align-items: flex-start; gap: 14px; }
 .step-num { width: 32px; height: 32px; border-radius: 50%; background: #d4a017; color: #0f3d1c; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
 .step-text { font-size: 14px; color: rgba(255,255,255,.85); padding-top: 5px; line-height: 1.4; }
+.btn-track { margin-top: 24px; display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; background: rgba(255,255,255,.12); color: #fff; border: 2px solid rgba(255,255,255,.35); border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .2s; width: fit-content; }
+.btn-track:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.7); transform: translateY(-1px); }
 .apply-card { flex: 1; background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 16px 48px rgba(0,0,0,.2); }
 .apply-card h3 { font-size: 20px; font-weight: 700; color: #0f3d1c; margin-bottom: 6px; }
 .apply-card p { font-size: 13px; color: #607060; margin-bottom: 22px; }
@@ -550,7 +596,18 @@ a { text-decoration: none; }
 .af-field input,.af-field select { padding: 11px 14px; border: 1.5px solid #d6e4d8; border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; background: #fff; transition: border-color .2s; }
 .af-field input:focus,.af-field select:focus { border-color: #1a6b2e; box-shadow: 0 0 0 3px rgba(26,107,46,.1); }
 .apply-submit { padding: 13px; background: #1a6b2e; color: #fff; border: none; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all .2s; font-family: inherit; }
-.apply-submit:hover { background: #134f22; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,107,46,.3); }
+.apply-submit:hover:not(:disabled) { background: #134f22; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,107,46,.3); }
+.apply-submit:disabled { opacity: .6; cursor: not-allowed; }
+.app-success { text-align: center; padding: 10px 0; }
+.app-success-icon { font-size: 48px; color: #1a6b2e; margin-bottom: 12px; }
+.app-success h4 { font-size: 18px; font-weight: 700; color: #0f3d1c; margin-bottom: 8px; }
+.app-success p  { font-size: 13px; color: #607060; line-height: 1.6; margin-bottom: 18px; }
+.tracking-box { background: #eaf4ec; border: 2px solid #1a6b2e; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+.tb-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #607060; margin-bottom: 6px; }
+.tb-code  { font-size: 28px; font-weight: 800; color: #1a6b2e; letter-spacing: 2px; font-family: monospace; margin-bottom: 8px; }
+.tb-note  { font-size: 12px; color: #607060; line-height: 1.5; }
+.track-link { display: inline-flex; align-items: center; gap: 7px; padding: 11px 22px; background: #1a6b2e; color: #fff; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all .2s; }
+.track-link:hover { background: #134f22; }
 
 /* NEWS */
 .news-section { background: #fff; }

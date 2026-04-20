@@ -44,7 +44,7 @@
         <div class="modal-body">
           <div class="form-grid">
             <div class="field full"><label>Event Title *</label><input v-model="form.title" placeholder="CS Department Seminar" /></div>
-            <div class="field"><label>Date *</label><input v-model="form.date" placeholder="Mar 15, 2025" /></div>
+            <div class="field"><label>Date *</label><CalendarPicker v-model="form.date" placeholder="Select event date" /></div>
             <div class="field"><label>Location *</label><input v-model="form.location" placeholder="AVR Building A" /></div>
             <div class="field">
               <label>Type *</label>
@@ -101,6 +101,7 @@ import { ref, computed, onMounted } from 'vue'
 import { supabase } from '@/lib/supabase.js'
 import { logActivity } from '@/lib/activityLog.js'
 import { useAuthStore } from '@/store/auth.js'
+import CalendarPicker from '@/components/CalendarPicker.vue'
 
 const auth        = useAuthStore()
 const events      = ref([])
@@ -181,39 +182,39 @@ async function deleteEvent() {
 
 <style scoped>
 .page-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
-.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:8px 12px;flex:1;min-width:180px;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d6e4d8;border-radius:8px;padding:8px 12px;flex:1;min-width:180px;}
 .search-wrap i{color:#6c757d;}
 .search-wrap input{border:none;outline:none;font-size:13px;font-family:inherit;width:100%;}
-.filter-select{padding:8px 12px;border:1px solid #dee2e6;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;outline:none;}
-.btn-primary{padding:9px 16px;background:#0d3b66;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;font-family:inherit;}
+.filter-select{padding:8px 12px;border:1px solid #d6e4d8;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;outline:none;}
+.btn-primary{padding:9px 16px;background:#1a6b2e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;font-family:inherit;}
 .btn-primary:disabled{opacity:.6;}
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #d6e4d8;background:#f8f9fa;text-align:left;white-space:nowrap;}
 td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;vertical-align:middle;}
 tr:hover td{background:#f8f9fa;}
 tr:last-child td{border-bottom:none;}
 .badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
-.badge-blue{background:#e8f4fd;color:#0d3b66;}
+.badge-blue{background:#eaf4ec;color:#1a6b2e;}
 .badge-green{background:#f0fff4;color:#198754;}
 .badge-gold{background:#fff8e1;color:#b8890e;}
 .badge-purple{background:#f5f0ff;color:#6f42c1;}
 .badge-grey{background:#f8f9fa;color:#6c757d;}
 .action-btns{display:flex;gap:6px;}
-.btn-icon{width:30px;height:30px;border-radius:7px;border:1px solid #dee2e6;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:#6c757d;}
-.btn-icon:hover{background:#e8f4fd;color:#0d3b66;border-color:#0d3b66;}
+.btn-icon{width:30px;height:30px;border-radius:7px;border:1px solid #d6e4d8;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:#6c757d;}
+.btn-icon:hover{background:#eaf4ec;color:#1a6b2e;border-color:#1a6b2e;}
 .btn-icon.danger:hover{background:#fff0f0;color:#dc3545;border-color:#dc3545;}
 .empty-state{padding:32px;text-align:center;color:#6c757d;font-size:13px;}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;overflow-y:auto;}
 .modal{background:#fff;border-radius:12px;width:100%;max-width:560px;display:flex;flex-direction:column;overflow:hidden;position:relative;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
 .confirm-modal{max-width:420px;}
-.modal-head{padding:14px 18px;border-bottom:1px solid #dee2e6;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;color:#0d3b66;flex-shrink:0;}
+.modal-head{padding:14px 18px;border-bottom:1px solid #d6e4d8;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;color:#1a6b2e;flex-shrink:0;}
 .modal-head button{background:none;border:none;cursor:pointer;font-size:16px;color:#6c757d;}
 .modal-body{padding:18px;overflow-y:auto;max-height:60vh;}
 .modal-body p{font-size:13px;color:#495057;line-height:1.6;}
-.modal-foot{padding:14px 18px;border-top:1px solid #dee2e6;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;}
-.btn-cancel{padding:8px 16px;background:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;}
+.modal-foot{padding:14px 18px;border-top:1px solid #d6e4d8;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;}
+.btn-cancel{padding:8px 16px;background:#f8f9fa;border:1px solid #d6e4d8;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;}
 .btn-danger{padding:8px 16px;background:#dc3545;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
 .btn-danger:disabled{opacity:.6;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -221,8 +222,8 @@ tr:last-child td{border-bottom:none;}
 .field{display:flex;flex-direction:column;gap:5px;}
 .field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#6c757d;}
 .optional{font-weight:400;text-transform:none;letter-spacing:0;font-size:9px;}
-.field input,.field select{padding:9px 11px;border:1px solid #dee2e6;border-radius:7px;font-size:13px;font-family:inherit;outline:none;background:#fff;}
-.field input:focus,.field select:focus{border-color:#0d3b66;}
+.field input,.field select{padding:9px 11px;border:1px solid #d6e4d8;border-radius:7px;font-size:13px;font-family:inherit;outline:none;background:#fff;}
+.field input:focus,.field select:focus{border-color:#1a6b2e;}
 .form-error{margin-top:12px;padding:10px 12px;background:#fff0f0;border:1px solid #f5c6cb;border-radius:7px;font-size:12px;color:#c0392b;}
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 </style>

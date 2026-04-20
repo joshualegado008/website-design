@@ -174,7 +174,7 @@
           <div v-else class="history-list">
             <div v-for="h in nonAcademicHistory" :key="h.id" class="history-row">
               <div class="history-year">{{ h.year || '—' }}</div>
-              <div class="history-dot" style="background:#e9a825"></div>
+              <div class="history-dot" style="background:#d4a017"></div>
               <div class="history-body">
                 <div class="history-title">{{ h.title }}</div>
                 <div class="history-desc" v-if="h.description">{{ h.description }}</div>
@@ -350,35 +350,35 @@ const vStatusClass  = s => ({ Pending:'badge-prog', Resolved:'badge-pass', Appea
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 
 /* Hero */
-.profile-hero{background:#0d3b66;border-radius:12px;padding:24px;display:flex;align-items:center;gap:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.profile-hero{background:#1a6b2e;border-radius:12px;padding:24px;display:flex;align-items:center;gap:20px;margin-bottom:16px;position:relative;overflow:hidden;}
 .profile-hero::after{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(233,168,37,0.15),transparent 70%);border-radius:50%;}
-.hero-avatar{width:60px;height:60px;border-radius:14px;background:#e9a825;color:#0d3b66;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;}
+.hero-avatar{width:60px;height:60px;border-radius:14px;background:#d4a017;color:#1a6b2e;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;}
 .hero-body{}
 .hero-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;}
 .hero-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;}
-.hero-id{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:rgba(233,168,37,0.2);border:1px solid rgba(233,168,37,0.35);border-radius:20px;font-size:10px;font-weight:700;color:#e9a825;}
+.hero-id{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:rgba(233,168,37,0.2);border:1px solid rgba(233,168,37,0.35);border-radius:20px;font-size:10px;font-weight:700;color:#d4a017;}
 
 /* Layout */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
 .mb{margin-bottom:14px;}
 
 /* Panel */
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;}
 .panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
+.panel-title{font-size:13px;font-weight:700;color:#1a6b2e;}
 .panel-body{padding:14px 16px;}
-.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#e8f4fd;color:#0d3b66;}
+.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#eaf4ec;color:#1a6b2e;}
 
 /* Info rows */
 .info-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid #f8f9fa;gap:12px;}
 .info-row:last-child{border-bottom:none;}
 .info-lbl{font-size:11px;color:#6c757d;font-weight:600;flex-shrink:0;}
-.info-val{font-size:12px;color:#0d3b66;font-weight:600;text-align:right;word-break:break-all;}
+.info-val{font-size:12px;color:#1a6b2e;font-weight:600;text-align:right;word-break:break-all;}
 
 /* Adviser */
 .adviser-card{display:flex;align-items:flex-start;gap:14px;}
-.adviser-avatar{width:46px;height:46px;border-radius:12px;background:#fff8e1;color:#b8890e;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;border:2px solid #e9a825;}
-.adviser-name{font-size:14px;font-weight:700;color:#0d3b66;margin-bottom:2px;}
+.adviser-avatar{width:46px;height:46px;border-radius:12px;background:#fff8e1;color:#b8890e;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;border:2px solid #d4a017;}
+.adviser-name{font-size:14px;font-weight:700;color:#1a6b2e;margin-bottom:2px;}
 .adviser-pos{font-size:11px;color:#6c757d;margin-bottom:5px;}
 .adviser-meta{font-size:11px;color:#495057;display:flex;align-items:center;gap:5px;margin-bottom:2px;}
 
@@ -386,11 +386,11 @@ const vStatusClass  = s => ({ Pending:'badge-prog', Resolved:'badge-pass', Appea
 .advised-list{display:flex;flex-direction:column;}
 .advised-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f8f9fa;}
 .advised-row:last-child{border-bottom:none;}
-.advised-avatar{width:30px;height:30px;border-radius:8px;background:#e8f4fd;color:#0d3b66;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.advised-avatar{width:30px;height:30px;border-radius:8px;background:#eaf4ec;color:#1a6b2e;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
 .advised-info{flex:1;min-width:0;}
 .advised-name{font-size:12px;font-weight:600;color:#212529;}
 .advised-sub{font-size:10px;color:#6c757d;}
-.section-chip{font-size:10px;font-weight:700;padding:2px 8px;background:#f0f4f8;border-radius:20px;color:#0d3b66;white-space:nowrap;}
+.section-chip{font-size:10px;font-weight:700;padding:2px 8px;background:#f0f4f8;border-radius:20px;color:#1a6b2e;white-space:nowrap;}
 
 /* Empty states */
 .empty-inline{display:flex;align-items:center;gap:8px;color:#6c757d;font-size:12px;}
@@ -400,29 +400,29 @@ const vStatusClass  = s => ({ Pending:'badge-prog', Resolved:'badge-pass', Appea
 /* Table */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #d6e4d8;background:#f8f9fa;text-align:left;white-space:nowrap;}
 th.ps{padding-left:18px;}
 td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;}
 td.ps{padding-left:18px;}
 td.center{text-align:center;}
 tr:hover td{background:#f8f9fa;}
 tr:last-child td{border-bottom:none;}
-.grade-val{color:#0d3b66;}
+.grade-val{color:#1a6b2e;}
 
 /* Badges */
 .badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
 .badge-pass   {background:#f0fff4;color:#198754;}
 .badge-fail   {background:#fff0f0;color:#dc3545;}
-.badge-prog   {background:#e8f4fd;color:#0d3b66;}
+.badge-prog   {background:#eaf4ec;color:#1a6b2e;}
 .badge-minor  {background:#fff8e1;color:#b8890e;}
 .badge-major  {background:#fff0f0;color:#dc3545;}
 .badge-serious{background:#dc3545;color:#fff;}
 
 /* Affiliations grid */
 .tag-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 16px;}
-.tag-card{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#f8f9fa;border-radius:9px;border:1px solid #dee2e6;position:relative;}
+.tag-card{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#f8f9fa;border-radius:9px;border:1px solid #d6e4d8;position:relative;}
 .tag-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.aff-org  {background:#e8f4fd;color:#0d3b66;}
+.aff-org  {background:#eaf4ec;color:#1a6b2e;}
 .aff-sport{background:#fff8e1;color:#b8890e;}
 .aff-club {background:#f5f0ff;color:#6f42c1;}
 .aff-comm {background:#f0fff4;color:#198754;}
@@ -437,7 +437,7 @@ tr:last-child td{border-bottom:none;}
 /* Skills */
 .skills-wrap{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px;}
 .skill-tag{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;}
-.sk-acad{background:#e8f4fd;color:#0d3b66;}
+.sk-acad{background:#eaf4ec;color:#1a6b2e;}
 .sk-sport{background:#fff8e1;color:#b8890e;}
 .sk-arts{background:#f5f0ff;color:#6f42c1;}
 .sk-tech{background:#f0fff4;color:#198754;}
@@ -449,12 +449,12 @@ tr:last-child td{border-bottom:none;}
 .history-row{display:flex;gap:12px;padding-bottom:16px;position:relative;}
 .history-row:not(:last-child)::before{content:'';position:absolute;left:38px;top:22px;bottom:0;width:2px;background:#e9ecef;}
 .history-year{width:36px;font-size:11px;font-weight:700;color:#6c757d;text-align:right;padding-top:2px;flex-shrink:0;}
-.history-dot{width:12px;height:12px;border-radius:50%;background:#0d3b66;flex-shrink:0;margin-top:4px;border:2px solid #fff;box-shadow:0 0 0 2px #dee2e6;}
+.history-dot{width:12px;height:12px;border-radius:50%;background:#1a6b2e;flex-shrink:0;margin-top:4px;border:2px solid #fff;box-shadow:0 0 0 2px #d6e4d8;}
 .history-body{flex:1;min-width:0;}
 .history-title{font-size:13px;font-weight:700;color:#212529;margin-bottom:2px;}
 .history-sub{font-size:11px;color:#6c757d;margin-bottom:4px;}
 .history-desc{font-size:11px;color:#495057;margin-bottom:5px;}
-.hist-type-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:#e8f4fd;color:#0d3b66;}
+.hist-type-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:#eaf4ec;color:#1a6b2e;}
 
 @media(max-width:768px){.info-grid{grid-template-columns:1fr;}.tag-grid{grid-template-columns:1fr;}}
 </style>

@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '@/store/auth.js'
 import HomeView      from '@/views/HomeView.vue'
 import Login         from '@/views/Login.vue'
+import ApplyTrack    from '@/views/apply/ApplyTrack.vue'
+import DebugSupabase from '@/views/DebugSupabase.vue'
 import Dashboard     from '@/views/Dashboard.vue'
 import Profile       from '@/views/Profile.vue'
 import Syllabus      from '@/views/Syllabus.vue'
@@ -19,10 +21,14 @@ import AdminFaculty         from '@/views/admin/AdminFaculty.vue'
 import AdminSubjects        from '@/views/admin/AdminSubjects.vue'
 import AdminEvents          from '@/views/admin/AdminEvents.vue'
 import AdminActivityLog     from '@/views/admin/AdminActivityLog.vue'
+import AdminAdmissions      from '@/views/admin/AdminAdmissions.vue'
+import AdminUploadStudents  from '@/views/admin/AdminUploadStudents.vue'
 
 const routes = [
   { path: '/', component: HomeView, name: 'home', meta: { public: true } },
   { path: '/login', component: Login, meta: { public: true } },
+  { path: '/apply/track', component: ApplyTrack, name: 'apply-track', meta: { public: true } },
+  { path: '/debug', component: DebugSupabase, meta: { public: true } },
   {
     path: '/dashboard',
     component: DashboardLayout,
@@ -49,7 +55,9 @@ const routes = [
       { path: 'faculty',            component: AdminFaculty,       name: 'admin-faculty'         },
       { path: 'subjects',           component: AdminSubjects,      name: 'admin-subjects'        },
       { path: 'events',             component: AdminEvents,        name: 'admin-events'          },
-      { path: 'activity',           component: AdminActivityLog,   name: 'admin-activity'        },
+      { path: 'activity',    component: AdminActivityLog, name: 'admin-activity'    },
+      { path: 'admissions',      component: AdminAdmissions,      name: 'admin-admissions'       },
+      { path: 'upload-students', component: AdminUploadStudents,  name: 'admin-upload-students'  },
     ]
   }
 ]

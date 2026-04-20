@@ -41,12 +41,12 @@
           </div>
         </div>
         <div class="file-drop" @click="$refs.matFile.click()" @dragover.prevent @drop.prevent="onMatDrop">
-          <i class="bi bi-cloud-upload" style="font-size:24px;color:#0d3b66;margin-bottom:6px"></i>
+          <i class="bi bi-cloud-upload" style="font-size:24px;color:#1a6b2e;margin-bottom:6px"></i>
           <div v-if="matForm.file">
             <span class="file-chosen"><i class="bi bi-file-earmark-check"></i> {{ matForm.file.name }}</span>
           </div>
           <div v-else>
-            <div style="font-size:13px;font-weight:600;color:#0d3b66">Click or drag file here</div>
+            <div style="font-size:13px;font-weight:600;color:#1a6b2e">Click or drag file here</div>
             <div style="font-size:11px;color:#6c757d;margin-top:3px">PDF, PPT, PPTX, DOCX, ZIP — max 50MB</div>
           </div>
         </div>
@@ -110,12 +110,12 @@
           </div>
         </div>
         <div class="file-drop" @click="$refs.subFile.click()" @dragover.prevent @drop.prevent="onSubDrop">
-          <i class="bi bi-file-earmark-arrow-up" style="font-size:24px;color:#0d3b66;margin-bottom:6px"></i>
+          <i class="bi bi-file-earmark-arrow-up" style="font-size:24px;color:#1a6b2e;margin-bottom:6px"></i>
           <div v-if="subForm.file">
             <span class="file-chosen"><i class="bi bi-file-earmark-check"></i> {{ subForm.file.name }}</span>
           </div>
           <div v-else>
-            <div style="font-size:13px;font-weight:600;color:#0d3b66">Click or drag your file here</div>
+            <div style="font-size:13px;font-weight:600;color:#1a6b2e">Click or drag your file here</div>
             <div style="font-size:11px;color:#6c757d;margin-top:3px">Any file type — max 50MB</div>
           </div>
         </div>
@@ -186,7 +186,7 @@
           <button @click="gradeModal=false"><i class="bi bi-x-lg"></i></button>
         </div>
         <div class="modal-body">
-          <div style="font-size:13px;font-weight:600;color:#0d3b66;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:#1a6b2e;margin-bottom:12px">
             {{ gradeTarget?.title }} — {{ gradeTarget?.students?.name || gradeTarget?.student_id }}
           </div>
           <div class="field" style="margin-bottom:12px">
@@ -449,36 +449,36 @@ const subStatusClass = s => ({
 <style scoped>
 /* Header */
 .subj-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
-.back-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:#fff;border:1px solid #dee2e6;border-radius:8px;font-size:12px;font-weight:600;color:#0d3b66;cursor:pointer;font-family:inherit;}
-.back-btn:hover{background:#e8f4fd;}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:#fff;border:1px solid #d6e4d8;border-radius:8px;font-size:12px;font-weight:600;color:#1a6b2e;cursor:pointer;font-family:inherit;}
+.back-btn:hover{background:#eaf4ec;}
 .subj-info{display:flex;align-items:center;gap:12px;}
-.subj-code-badge{padding:4px 12px;background:#0d3b66;color:#fff;border-radius:8px;font-size:13px;font-weight:700;}
-.subj-name{font-size:15px;font-weight:700;color:#0d3b66;}
+.subj-code-badge{padding:4px 12px;background:#1a6b2e;color:#fff;border-radius:8px;font-size:13px;font-weight:700;}
+.subj-name{font-size:15px;font-weight:700;color:#1a6b2e;}
 .subj-meta{font-size:11px;color:#6c757d;margin-top:2px;}
 /* Tabs */
-.tabs{display:flex;gap:0;border-bottom:2px solid #dee2e6;margin-bottom:18px;}
+.tabs{display:flex;gap:0;border-bottom:2px solid #d6e4d8;margin-bottom:18px;}
 .tab{padding:9px 20px;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;font-size:13px;font-weight:600;color:#6c757d;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;}
-.tab.active{color:#0d3b66;border-bottom-color:#0d3b66;}
+.tab.active{color:#1a6b2e;border-bottom-color:#1a6b2e;}
 /* Upload card */
-.upload-card{background:#f8f9fa;border:1px solid #dee2e6;border-radius:10px;padding:18px;margin-bottom:16px;}
-.upload-card-title{font-size:13px;font-weight:700;color:#0d3b66;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.upload-card{background:#f8f9fa;border:1px solid #d6e4d8;border-radius:10px;padding:18px;margin-bottom:16px;}
+.upload-card-title{font-size:13px;font-weight:700;color:#1a6b2e;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .field{display:flex;flex-direction:column;gap:5px;}
 .field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#6c757d;}
-.field input,.field select,.field textarea{padding:9px 11px;border:1px solid #dee2e6;border-radius:7px;font-size:13px;font-family:inherit;outline:none;background:#fff;resize:vertical;}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:#0d3b66;}
+.field input,.field select,.field textarea{padding:9px 11px;border:1px solid #d6e4d8;border-radius:7px;font-size:13px;font-family:inherit;outline:none;background:#fff;resize:vertical;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#1a6b2e;}
 /* File drop */
-.file-drop{border:2px dashed #dee2e6;border-radius:9px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;transition:border-color .15s;background:#fff;}
-.file-drop:hover{border-color:#0d3b66;}
+.file-drop{border:2px dashed #d6e4d8;border-radius:9px;padding:24px;text-align:center;cursor:pointer;margin-bottom:12px;transition:border-color .15s;background:#fff;}
+.file-drop:hover{border-color:#1a6b2e;}
 .file-chosen{font-size:12px;font-weight:600;color:#198754;display:flex;align-items:center;justify-content:center;gap:6px;}
 .upload-actions{display:flex;justify-content:flex-end;}
-.btn-primary{padding:9px 18px;background:#0d3b66;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;}
+.btn-primary{padding:9px 18px;background:#1a6b2e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;}
 /* Panel */
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
-.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#e8f4fd;color:#0d3b66;}
+.panel-title{font-size:13px;font-weight:700;color:#1a6b2e;}
+.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#eaf4ec;color:#1a6b2e;}
 /* File rows */
 .file-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #f2f2f2;}
 .file-row:last-child{border-bottom:none;}
@@ -486,43 +486,43 @@ const subStatusClass = s => ({
 .file-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .file-icon-pdf{background:#fff0f0;color:#dc3545;}
 .file-icon-ppt{background:#fff3e0;color:#e65100;}
-.file-icon-doc{background:#e8f4fd;color:#0d3b66;}
+.file-icon-doc{background:#eaf4ec;color:#1a6b2e;}
 .file-icon-xls{background:#f0fff4;color:#198754;}
 .file-icon-zip{background:#f5f0ff;color:#6f42c1;}
-.file-icon-sub{background:#e8f4fd;color:#0d3b66;}
+.file-icon-sub{background:#eaf4ec;color:#1a6b2e;}
 .file-info{flex:1;min-width:0;}
 .file-title{font-size:13px;font-weight:600;color:#212529;}
 .file-meta{font-size:10px;color:#6c757d;margin-top:2px;}
 .file-desc{font-size:11px;color:#495057;margin-top:3px;font-style:italic;}
 .feedback-row{font-size:11px;color:#0d6efd;margin-top:4px;display:flex;align-items:center;gap:5px;}
 .file-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.btn-download{padding:5px 12px;background:#e8f4fd;color:#0d3b66;border:1px solid #bee5fd;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:5px;}
-.btn-download:hover{background:#0d3b66;color:#fff;}
-.btn-del{width:28px;height:28px;border-radius:7px;background:#fff;border:1px solid #dee2e6;cursor:pointer;font-size:13px;color:#dc3545;display:flex;align-items:center;justify-content:center;}
+.btn-download{padding:5px 12px;background:#eaf4ec;color:#1a6b2e;border:1px solid #bee5fd;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:5px;}
+.btn-download:hover{background:#1a6b2e;color:#fff;}
+.btn-del{width:28px;height:28px;border-radius:7px;background:#fff;border:1px solid #d6e4d8;cursor:pointer;font-size:13px;color:#dc3545;display:flex;align-items:center;justify-content:center;}
 .btn-del:hover{background:#fff0f0;border-color:#dc3545;}
-.btn-grade{width:28px;height:28px;border-radius:7px;background:#fff;border:1px solid #dee2e6;cursor:pointer;font-size:13px;color:#0d3b66;display:flex;align-items:center;justify-content:center;}
-.btn-grade:hover{background:#e8f4fd;border-color:#0d3b66;}
+.btn-grade{width:28px;height:28px;border-radius:7px;background:#fff;border:1px solid #d6e4d8;cursor:pointer;font-size:13px;color:#1a6b2e;display:flex;align-items:center;justify-content:center;}
+.btn-grade:hover{background:#eaf4ec;border-color:#1a6b2e;}
 /* Status badges */
 .status-badge{padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
-.status-sub    {background:#e8f4fd;color:#0d3b66;}
+.status-sub    {background:#eaf4ec;color:#1a6b2e;}
 .status-graded {background:#f0fff4;color:#198754;}
 .status-returned{background:#fff8e1;color:#b8890e;}
 .grade-badge{padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;background:#f0fff4;color:#198754;}
 /* Filter bar */
 .filter-bar{margin-bottom:12px;}
-.search-input{width:100%;padding:9px 12px;border:1px solid #dee2e6;border-radius:8px;font-size:13px;font-family:inherit;outline:none;}
-.search-input:focus{border-color:#0d3b66;}
+.search-input{width:100%;padding:9px 12px;border:1px solid #d6e4d8;border-radius:8px;font-size:13px;font-family:inherit;outline:none;}
+.search-input:focus{border-color:#1a6b2e;}
 /* Modal */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
 .modal{background:#fff;border-radius:12px;width:100%;max-width:480px;display:flex;flex-direction:column;overflow:hidden;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.modal-head{padding:14px 18px;border-bottom:1px solid #dee2e6;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;color:#0d3b66;flex-shrink:0;}
+.modal-head{padding:14px 18px;border-bottom:1px solid #d6e4d8;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;color:#1a6b2e;flex-shrink:0;}
 .modal-head button{background:none;border:none;cursor:pointer;font-size:16px;color:#6c757d;}
 .modal-body{padding:18px;overflow-y:auto;max-height:60vh;}
-.modal-foot{padding:14px 18px;border-top:1px solid #dee2e6;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;}
-.btn-cancel{padding:8px 16px;background:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;}
+.modal-foot{padding:14px 18px;border-top:1px solid #d6e4d8;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;background:#fff;}
+.btn-cancel{padding:8px 16px;background:#f8f9fa;border:1px solid #d6e4d8;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;}
 /* Empty / loading */
 .empty-state{padding:32px;display:flex;align-items:center;justify-content:center;gap:10px;color:#6c757d;font-size:13px;}
-.empty-state i{font-size:22px;color:#dee2e6;}
+.empty-state i{font-size:22px;color:#d6e4d8;}
 .form-error{padding:8px 12px;background:#fff0f0;border:1px solid #f5c6cb;border-radius:7px;font-size:12px;color:#c0392b;margin-bottom:8px;}
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 @media(max-width:600px){.form-row{grid-template-columns:1fr;}}

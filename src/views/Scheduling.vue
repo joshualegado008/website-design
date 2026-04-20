@@ -30,7 +30,7 @@
                 </div>
               </template>
               <div v-else class="no-class">
-                <i class="bi bi-dash" style="font-size:18px;color:#dee2e6;display:block;margin-bottom:4px"></i>
+                <i class="bi bi-dash" style="font-size:18px;color:#d6e4d8;display:block;margin-bottom:4px"></i>
                 No class
               </div>
             </div>
@@ -177,30 +177,30 @@ const scheduleByDay = computed(() => {
 </script>
 
 <style scoped>
-.info-bar{display:flex;align-items:center;gap:8px;background:#e8f4fd;border:1px solid #bee5fd;border-radius:8px;padding:10px 14px;font-size:12px;color:#0d3b66;margin-bottom:16px;}
+.info-bar{display:flex;align-items:center;gap:8px;background:#eaf4ec;border:1px solid #bee5fd;border-radius:8px;padding:10px 14px;font-size:12px;color:#1a6b2e;margin-bottom:16px;}
 .loading-state{padding:60px;text-align:center;color:#6c757d;font-size:13px;}
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
+.panel-title{font-size:13px;font-weight:700;color:#1a6b2e;}
 .panel-body{padding:16px;}
 .week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;min-width:500px;}
-.day-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#6c757d;padding:4px 0;border-bottom:2px solid #dee2e6;margin-bottom:8px;text-align:center;}
-.sched-block{background:#0d3b66;border-radius:8px;padding:9px 11px;margin-bottom:7px;border-left:3px solid #e9a825;}
-.sched-code{font-size:11px;font-weight:700;color:#e9a825;margin-bottom:2px;}
+.day-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#6c757d;padding:4px 0;border-bottom:2px solid #d6e4d8;margin-bottom:8px;text-align:center;}
+.sched-block{background:#1a6b2e;border-radius:8px;padding:9px 11px;margin-bottom:7px;border-left:3px solid #d4a017;}
+.sched-code{font-size:11px;font-weight:700;color:#d4a017;margin-bottom:2px;}
 .sched-name{font-size:10px;color:rgba(255,255,255,0.8);line-height:1.3;}
 .sched-room{font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;}
 .no-class{text-align:center;font-size:11px;color:#adb5bd;padding:16px 0;}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #d6e4d8;background:#f8f9fa;text-align:left;white-space:nowrap;}
 th.ps{padding-left:18px;}
 td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;vertical-align:middle;}
 td.ps{padding-left:18px;}
 tr:hover td{background:#f8f9fa;}
 tr:last-child td{border-bottom:none;}
-.days-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;background:#e8f4fd;color:#0d3b66;}
+.days-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;background:#eaf4ec;color:#1a6b2e;}
 .muted{color:#adb5bd;}
 .empty-state{padding:32px;display:flex;align-items:center;justify-content:center;gap:8px;color:#6c757d;font-size:13px;}
-.empty-state i{font-size:20px;color:#dee2e6;}
+.empty-state i{font-size:20px;color:#d6e4d8;}
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 </style>

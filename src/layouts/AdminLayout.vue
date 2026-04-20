@@ -19,12 +19,14 @@
         </div>
       </div>
       <nav class="sidebar-nav">
-        <router-link to="/admin"          class="nav-item" :class="{active:route.name==='admin-dashboard'}"><i class="bi bi-grid-1x2-fill"></i> Dashboard</router-link>
-        <router-link to="/admin/students" class="nav-item" :class="{active:route.name==='admin-students'||route.name==='admin-student-detail'}"><i class="bi bi-people-fill"></i> Students</router-link>
-        <router-link to="/admin/faculty"  class="nav-item" :class="{active:route.name==='admin-faculty'}"><i class="bi bi-person-workspace"></i> Faculty</router-link>
-        <router-link to="/admin/subjects" class="nav-item" :class="{active:route.name==='admin-subjects'}"><i class="bi bi-journals"></i> Subjects</router-link>
-        <router-link to="/admin/events"   class="nav-item" :class="{active:route.name==='admin-events'}"><i class="bi bi-calendar-event-fill"></i> Events</router-link>
-        <router-link to="/admin/activity" class="nav-item" :class="{active:route.name==='admin-activity'}"><i class="bi bi-activity"></i> Activity Log</router-link>
+        <router-link to="/admin"           class="nav-item" :class="{active:route.name==='admin-dashboard'}"><i class="bi bi-grid-1x2-fill"></i> Dashboard</router-link>
+        <router-link to="/admin/admissions"     class="nav-item" :class="{active:route.name==='admin-admissions'}"><i class="bi bi-file-earmark-person-fill"></i> Admissions</router-link>
+        <router-link to="/admin/upload-students" class="nav-item" :class="{active:route.name==='admin-upload-students'}"><i class="bi bi-file-earmark-excel-fill"></i> Upload Students</router-link>
+        <router-link to="/admin/students"  class="nav-item" :class="{active:route.name==='admin-students'||route.name==='admin-student-detail'}"><i class="bi bi-people-fill"></i> Students</router-link>
+        <router-link to="/admin/faculty"   class="nav-item" :class="{active:route.name==='admin-faculty'}"><i class="bi bi-person-workspace"></i> Faculty</router-link>
+        <router-link to="/admin/subjects"  class="nav-item" :class="{active:route.name==='admin-subjects'}"><i class="bi bi-journals"></i> Subjects</router-link>
+        <router-link to="/admin/events"    class="nav-item" :class="{active:route.name==='admin-events'}"><i class="bi bi-calendar-event-fill"></i> Events</router-link>
+        <router-link to="/admin/activity"  class="nav-item" :class="{active:route.name==='admin-activity'}"><i class="bi bi-activity"></i> Activity Log</router-link>
       </nav>
       <div class="sidebar-footer">
         <button class="btn-logout" @click="handleLogout"><i class="bi bi-box-arrow-left"></i> Sign Out</button>
@@ -67,6 +69,8 @@ const titles = {
   'admin-subjects':       'Manage Subjects',
   'admin-events':         'Manage Events',
   'admin-activity':       'Activity Log',
+  'admin-admissions':     'Admissions',
+  'admin-upload-students':'Upload Students',
 }
 const pageTitle = computed(() => titles[route.name] || 'Admin')
 
@@ -95,7 +99,7 @@ function handleLogout() {
 .admin-sidebar {
   width: 220px;
   flex-shrink: 0;
-  background: #0d3b66;
+  background: #1a6b2e;
   display: flex;
   flex-direction: column;
   overflow: hidden; /* sidebar clips its OWN content, does not affect fixed */
@@ -106,7 +110,7 @@ function handleLogout() {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: #f4f6f9;
+  background: #f5f7f5;
   /* overflow:hidden REMOVED — was trapping position:fixed inside column */
 }
 
@@ -118,7 +122,7 @@ function handleLogout() {
 
 /* ─── Rest of styles unchanged ─────────────────────────────── */
 .sidebar-brand{padding:16px 14px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:10px;}
-.brand-icon{width:34px;height:34px;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0d3b66;font-size:15px;flex-shrink:0;}
+.brand-icon{width:34px;height:34px;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a6b2e;font-size:15px;flex-shrink:0;}
 .brand-name{font-size:13px;font-weight:700;color:#fff;display:block;line-height:1;}
 .brand-badge{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#d4a017;display:block;margin-top:2px;}
 .sidebar-user{padding:10px 12px;margin:10px 8px;background:rgba(255,255,255,0.07);border-radius:8px;display:flex;align-items:center;gap:8px;}
@@ -133,10 +137,10 @@ function handleLogout() {
 .sidebar-footer{padding:8px;border-top:1px solid rgba(255,255,255,0.1);}
 .btn-logout{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;color:rgba(255,255,255,0.4);font-size:12px;font-weight:600;background:none;border:none;width:100%;cursor:pointer;font-family:inherit;}
 .btn-logout:hover{background:rgba(255,50,50,0.15);color:#ff6b6b;}
-.admin-topbar{background:#fff;border-bottom:1px solid #dee2e6;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.admin-topbar{background:#fff;border-bottom:1px solid #d6e4d8;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-left{display:flex;align-items:center;gap:12px;}
-.page-title{font-size:16px;font-weight:700;color:#0d3b66;}
-.hamburger{display:none;border:none;background:none;font-size:20px;cursor:pointer;color:#0d3b66;}
+.page-title{font-size:16px;font-weight:700;color:#1a6b2e;}
+.hamburger{display:none;border:none;background:none;font-size:20px;cursor:pointer;color:#1a6b2e;}
 .admin-chip{display:flex;align-items:center;gap:5px;padding:4px 12px;background:rgba(233,168,37,0.15);border:1px solid rgba(233,168,37,0.3);border-radius:20px;font-size:10px;font-weight:700;color:#b8890e;}
 @media(max-width:768px){.admin-sidebar{display:none;}.hamburger{display:block;}}
 </style>

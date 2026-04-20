@@ -116,18 +116,18 @@ const filtered = computed(() => {
 
 <style scoped>
 .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
-.page-title{font-size:14px;font-weight:700;color:#0d3b66;margin:0 0 4px;}
+.page-title{font-size:14px;font-weight:700;color:#1a6b2e;margin:0 0 4px;}
 .page-sub{font-size:12px;color:#6c757d;margin:0;}
-.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:7px 12px;min-width:200px;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d6e4d8;border-radius:8px;padding:7px 12px;min-width:200px;}
 .search-wrap i{color:#6c757d;font-size:13px;}
 .search-wrap input{border:none;outline:none;font-size:13px;font-family:inherit;width:100%;}
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;}
 .panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
-.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#e8f4fd;color:#0d3b66;}
+.panel-title{font-size:13px;font-weight:700;color:#1a6b2e;}
+.count-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:#eaf4ec;color:#1a6b2e;}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #d6e4d8;background:#f8f9fa;text-align:left;white-space:nowrap;}
 th.ps{padding-left:20px;}
 td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;vertical-align:middle;}
 td.ps{padding-left:20px;}
@@ -136,9 +136,9 @@ tr:hover td{background:#f8f9fa;}
 tr:last-child td{border-bottom:none;}
 .badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
 .badge-pass{background:#f0fff4;color:#198754;}
-.course-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:#e8f4fd;color:#0d3b66;}
+.course-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;background:#eaf4ec;color:#1a6b2e;}
 .muted{color:#adb5bd;}
 .empty-state{padding:32px;text-align:center;color:#6c757d;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;}
-.empty-state i{font-size:20px;color:#dee2e6;}
+.empty-state i{font-size:20px;color:#d6e4d8;}
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 </style>

@@ -58,11 +58,11 @@
               <td>
                 <div v-if="log.target_name" class="target-name">{{ log.target_name }}</div>
                 <div v-if="log.target_id" class="target-id">{{ log.target_id }}</div>
-                <span v-if="!log.target_name && !log.target_id" style="color:#dee2e6">—</span>
+                <span v-if="!log.target_name && !log.target_id" style="color:#d6e4d8">—</span>
               </td>
               <td>
                 <span v-if="log.target_type" class="type-badge" :class="typeClass(log.target_type)">{{ log.target_type }}</span>
-                <span v-else style="color:#dee2e6">—</span>
+                <span v-else style="color:#d6e4d8">—</span>
               </td>
             </tr>
           </tbody>
@@ -131,29 +131,29 @@ const typeClass = t => ({ student:'type-blue', faculty:'type-gold', event:'type-
 
 <style scoped>
 .page-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:8px 12px;flex:1;min-width:180px;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #d6e4d8;border-radius:8px;padding:8px 12px;flex:1;min-width:180px;}
 .search-wrap i{color:#6c757d;}
 .search-wrap input{border:none;outline:none;font-size:13px;font-family:inherit;width:100%;}
-.filter-select{padding:8px 10px;border:1px solid #dee2e6;border-radius:8px;font-size:12px;font-family:inherit;background:#fff;outline:none;}
-.btn-outline{padding:8px 14px;background:#fff;border:1px solid #dee2e6;border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;color:#6c757d;}
+.filter-select{padding:8px 10px;border:1px solid #d6e4d8;border-radius:8px;font-size:12px;font-family:inherit;background:#fff;outline:none;}
+.btn-outline{padding:8px 14px;background:#fff;border:1px solid #d6e4d8;border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;color:#6c757d;}
 .btn-outline:hover{background:#f8f9fa;}
 
 .mini-stats{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
-.mini-stat{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;border:1px solid #dee2e6;border-radius:8px;font-size:12px;color:#6c757d;}
-.mini-stat strong{color:#0d3b66;margin:0 2px;}
+.mini-stat{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;border:1px solid #d6e4d8;border-radius:8px;font-size:12px;color:#6c757d;}
+.mini-stat strong{color:#1a6b2e;margin:0 2px;}
 .mini-stat i{font-size:14px;}
 
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;}
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #dee2e6;background:#f8f9fa;text-align:left;white-space:nowrap;}
+th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:#6c757d;border-bottom:2px solid #d6e4d8;background:#f8f9fa;text-align:left;white-space:nowrap;}
 td{padding:10px 14px;font-size:12px;border-bottom:1px solid #f2f2f2;color:#495057;vertical-align:middle;}
 tr:hover td{background:#f8f9fa;}
 tr:last-child td{border-bottom:none;}
 
 .actor-cell{display:flex;align-items:center;gap:8px;}
 .actor-avatar{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
-.av-admin{background:#e8f4fd;color:#0d3b66;}
+.av-admin{background:#eaf4ec;color:#1a6b2e;}
 .av-student{background:#f0fff4;color:#198754;}
 .av-faculty{background:#fff8e1;color:#b8890e;}
 .actor-name{font-weight:600;color:#212529;font-size:12px;}
@@ -161,7 +161,7 @@ tr:last-child td{border-bottom:none;}
 
 .action-badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;}
 .ac-create{background:#f0fff4;color:#198754;}
-.ac-update{background:#e8f4fd;color:#0d3b66;}
+.ac-update{background:#eaf4ec;color:#1a6b2e;}
 .ac-delete{background:#fff0f0;color:#dc3545;}
 .ac-default{background:#f8f9fa;color:#6c757d;}
 
@@ -169,14 +169,14 @@ tr:last-child td{border-bottom:none;}
 .target-id{font-size:10px;color:#6c757d;}
 
 .type-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;}
-.type-blue{background:#e8f4fd;color:#0d3b66;}
+.type-blue{background:#eaf4ec;color:#1a6b2e;}
 .type-gold{background:#fff8e1;color:#b8890e;}
 .type-red{background:#fff0f0;color:#dc3545;}
 .type-green{background:#f0fff4;color:#198754;}
 .type-grey{background:#f8f9fa;color:#6c757d;}
 
 .pagination{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid #f2f2f2;justify-content:flex-end;}
-.pg-btn{width:30px;height:30px;border:1px solid #dee2e6;border-radius:7px;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.pg-btn{width:30px;height:30px;border:1px solid #d6e4d8;border-radius:7px;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
 .pg-btn:disabled{opacity:.4;cursor:not-allowed;}
 .pg-info{font-size:12px;color:#6c757d;}
 

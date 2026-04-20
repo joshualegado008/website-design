@@ -3,11 +3,11 @@
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon" style="background:#e8f4fd;color:#0d3b66"><i class="bi bi-people-fill"></i></div>
+        <div class="stat-icon" style="background:#eaf4ec;color:#1a6b2e"><i class="bi bi-people-fill"></i></div>
         <div><div class="stat-val">{{ counts.students }}</div><div class="stat-lbl">Total Students</div></div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#fff8e1;color:#e9a825"><i class="bi bi-person-workspace"></i></div>
+        <div class="stat-icon" style="background:#fff8e1;color:#d4a017"><i class="bi bi-person-workspace"></i></div>
         <div><div class="stat-val">{{ counts.faculty }}</div><div class="stat-lbl">Total Faculty</div></div>
       </div>
       <div class="stat-card">
@@ -88,33 +88,33 @@ function badgeClass(type) {
 
 <style scoped>
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
-.stat-card{background:#fff;border:1px solid #dee2e6;border-radius:10px;padding:16px;display:flex;align-items:flex-start;gap:12px;}
+.stat-card{background:#fff;border:1px solid #d6e4d8;border-radius:10px;padding:16px;display:flex;align-items:flex-start;gap:12px;}
 .stat-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.stat-val{font-size:24px;font-weight:700;color:#0d3b66;line-height:1;}
+.stat-val{font-size:24px;font-weight:700;color:#1a6b2e;line-height:1;}
 .stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6c757d;margin-top:3px;}
 .row-panels{display:flex;gap:16px;}
 .flex-2{flex:2;}
 .flex-1{flex:1;}
-.panel{background:#fff;border:1px solid #dee2e6;border-radius:10px;overflow:hidden;}
+.panel{background:#fff;border:1px solid #d6e4d8;border-radius:10px;overflow:hidden;}
 .panel-head{padding:12px 16px;border-bottom:1px solid #f2f2f2;display:flex;align-items:center;justify-content:space-between;}
-.panel-title{font-size:13px;font-weight:700;color:#0d3b66;}
-.panel-link{font-size:11px;font-weight:700;color:#0d3b66;text-decoration:none;}
+.panel-title{font-size:13px;font-weight:700;color:#1a6b2e;}
+.panel-link{font-size:11px;font-weight:700;color:#1a6b2e;text-decoration:none;}
 .log-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #f8f9fa;}
 .log-row:last-child{border-bottom:none;}
-.log-avatar{width:30px;height:30px;border-radius:8px;background:#e8f4fd;color:#0d3b66;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.log-avatar{width:30px;height:30px;border-radius:8px;background:#eaf4ec;color:#1a6b2e;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
 .log-body{flex:1;min-width:0;}
 .log-action{font-size:12px;color:#212529;line-height:1.4;}
 .log-time{font-size:10px;color:#6c757d;margin-top:2px;}
 .log-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.4px;flex-shrink:0;}
-.badge-blue{background:#e8f4fd;color:#0d3b66;}
+.badge-blue{background:#eaf4ec;color:#1a6b2e;}
 .badge-gold{background:#fff8e1;color:#b8890e;}
 .badge-red{background:#fff0f0;color:#dc3545;}
 .badge-green{background:#f0fff4;color:#198754;}
 .badge-grey{background:#f8f9fa;color:#6c757d;}
 .quick-links{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.quick-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px 8px;border-radius:9px;background:#f8f9fa;border:1px solid #dee2e6;text-decoration:none;color:#0d3b66;font-size:11px;font-weight:600;transition:all .15s;}
-.quick-btn i{font-size:20px;color:#0d3b66;}
-.quick-btn:hover{background:#e8f4fd;border-color:#0d3b66;}
+.quick-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px 8px;border-radius:9px;background:#f8f9fa;border:1px solid #d6e4d8;text-decoration:none;color:#1a6b2e;font-size:11px;font-weight:600;transition:all .15s;}
+.quick-btn i{font-size:20px;color:#1a6b2e;}
+.quick-btn:hover{background:#eaf4ec;border-color:#1a6b2e;}
 .empty-state{padding:24px;text-align:center;color:#6c757d;font-size:12px;}
 @keyframes spin{to{transform:rotate(360deg);}}.spin{display:inline-block;animation:spin .7s linear infinite;}
 @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr);}.row-panels{flex-direction:column;}}
