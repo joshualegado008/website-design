@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { supabase } from '@/lib/supabase.js'
 
@@ -79,12 +79,11 @@ const loading = ref(true)
 const search  = ref('')
 const rows    = ref([])
 
-onMounted(async () => {
+async function loadData() {
   const user = auth.state.user
   const role = auth.state.role
 
   if (role === 'student') {
-    // Pull subjects from faculty_subjects that match the student's section
     const { data } = await supabase
       .from('faculty_subjects')
       .select('*, faculty:faculty_id(name)')
@@ -92,7 +91,6 @@ onMounted(async () => {
       .order('code')
     rows.value = data || []
   } else {
-    // Faculty sees their own assigned subjects
     const { data } = await supabase
       .from('faculty_subjects')
       .select('*')
@@ -101,7 +99,17 @@ onMounted(async () => {
     rows.value = data || []
   }
   loading.value = false
+}
+
+let channel
+onMounted(() => {
+  loadData()
+  channel = supabase
+    .channel('syllabus-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty_subjects' }, loadData)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 const filtered = computed(() => {
   const q = search.value.toLowerCase()

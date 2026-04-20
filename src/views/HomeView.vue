@@ -202,7 +202,7 @@
           <h2 class="section-title">Visit Our Campus</h2>
           <div class="contact-item">
             <i class="bi bi-geo-alt-fill"></i>
-            <div><div class="ci-label">Address</div><div class="ci-val">Gov. D.S. Mangubat Ave., Cabuyao City, Laguna 4025</div></div>
+            <div><div class="ci-label">Address</div><div class="ci-val">Katapatan Village, Cabuyao, Barangay Banay-Banay, 4025, Laguna, Philippines</div></div>
           </div>
           <div class="contact-item">
             <i class="bi bi-telephone-fill"></i>
@@ -267,7 +267,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2025 Pamantasan ng Cabuyao. All rights reserved.</span>
+        <span>© 2026 Pamantasan ng Cabuyao. All rights reserved.</span>
         <span>Cabuyao City, Laguna, Philippines</span>
       </div>
     </footer>

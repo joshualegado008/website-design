@@ -200,7 +200,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { supabase } from '@/lib/supabase.js'
 import { logActivity } from '@/lib/activityLog.js'
@@ -387,7 +387,15 @@ async function load() {
   facultyList.value = fac || []
   loading.value = false
 }
-onMounted(load)
+let channel
+onMounted(() => {
+  load()
+  channel = supabase
+    .channel('students-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'students' }, load)
+    .subscribe()
+})
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 function goToDetail(id) { router.push(`/admin/students/${id}`) }
 

@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { supabase } from '@/lib/supabase.js'
 
@@ -95,12 +95,11 @@ const loading   = ref(true)
 const schedules = ref([])
 const weekDays  = ['Monday','Tuesday','Wednesday','Thursday','Friday']
 
-onMounted(async () => {
+async function loadData() {
   const user = auth.state.user
   const role = auth.state.role
 
   if (role === 'student') {
-    // Try schedules table first (admin-assigned individual schedules)
     const { data: schedData } = await supabase
       .from('schedules')
       .select('*')
@@ -111,7 +110,6 @@ onMounted(async () => {
     if (schedData && schedData.length > 0) {
       schedules.value = schedData
     } else {
-      // Fallback: pull from faculty_subjects by the student's section
       const { data: subjData } = await supabase
         .from('faculty_subjects')
         .select('*, faculty:faculty_id(name)')
@@ -120,7 +118,6 @@ onMounted(async () => {
       schedules.value = subjData || []
     }
   } else {
-    // Faculty: try schedules table first
     const { data: schedData } = await supabase
       .from('schedules')
       .select('*')
@@ -131,7 +128,6 @@ onMounted(async () => {
     if (schedData && schedData.length > 0) {
       schedules.value = schedData
     } else {
-      // Fallback: faculty_subjects
       const { data: subjData } = await supabase
         .from('faculty_subjects')
         .select('*')
@@ -142,7 +138,18 @@ onMounted(async () => {
   }
 
   loading.value = false
+}
+
+let channel
+onMounted(() => {
+  loadData()
+  channel = supabase
+    .channel('scheduling-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'schedules' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty_subjects' }, loadData)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 // Parse schedule string like "MWF 7:30-8:30 AM" into day arrays
 function parseDays(s) {

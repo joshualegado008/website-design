@@ -201,7 +201,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
 import { supabase } from '@/lib/supabase.js'
 
 const applications    = ref([])
@@ -243,7 +243,15 @@ function countByStatus(key) {
   return applications.value.filter(a => a.status === key).length
 }
 
-onMounted(load)
+let channel
+onMounted(() => {
+  load()
+  channel = supabase
+    .channel('admissions-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'applicants' }, load)
+    .subscribe()
+})
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 async function load() {
   loading.value = true
   const { data } = await supabase

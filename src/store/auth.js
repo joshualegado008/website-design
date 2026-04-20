@@ -1,7 +1,34 @@
 import { reactive, computed } from 'vue'
 import { supabase } from '@/lib/supabase.js'
 
-const state = reactive({ user: null, role: null, loading: false, error: null })
+// ── Restore session from localStorage on page load ──────────────
+const SESSION_KEY = 'auth_session'
+
+function loadPersistedSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY)
+    if (!raw) return { user: null, role: null }
+    return JSON.parse(raw)
+  } catch {
+    return { user: null, role: null }
+  }
+}
+
+function persistSession(user, role) {
+  if (user && role) {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ user, role }))
+  } else {
+    localStorage.removeItem(SESSION_KEY)
+  }
+}
+
+const persisted = loadPersistedSession()
+const state = reactive({
+  user: persisted.user,
+  role: persisted.role,
+  loading: false,
+  error: null,
+})
 
 export function useAuthStore() {
 
@@ -18,6 +45,7 @@ export function useAuthStore() {
         if (error || !data) throw new Error('Admin not found')
         state.user = data
         state.role = 'admin'
+        persistSession(data, 'admin')
         return { ok: true }
       }
 
@@ -39,6 +67,7 @@ export function useAuthStore() {
         if (password !== expectedPassword) throw new Error('Invalid credentials')
         state.user = data
         state.role = 'student'
+        persistSession(data, 'student')
         return { ok: true }
       }
 
@@ -58,6 +87,7 @@ export function useAuthStore() {
         if (password !== expectedPassword) throw new Error('Invalid credentials')
         state.user = data
         state.role = 'faculty'
+        persistSession(data, 'faculty')
         return { ok: true }
       }
 
@@ -81,6 +111,7 @@ export function useAuthStore() {
     state.user  = null
     state.role  = null
     state.error = null
+    persistSession(null, null)
   }
 
   const isLoggedIn = computed(() => state.user !== null)

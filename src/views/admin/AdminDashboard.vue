@@ -53,14 +53,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { supabase } from '@/lib/supabase.js'
 
 const counts = ref({ students: 0, faculty: 0, subjects: 0, events: 0 })
 const recentLogs = ref([])
 const logsLoading = ref(true)
 
-onMounted(async () => {
+async function loadData() {
   const [s, f, sub, e, logs] = await Promise.all([
     supabase.from('students').select('id', { count: 'exact', head: true }),
     supabase.from('faculty').select('id', { count: 'exact', head: true }),
@@ -74,7 +74,21 @@ onMounted(async () => {
   counts.value.events   = e.count || 0
   recentLogs.value = logs.data || []
   logsLoading.value = false
+}
+
+let channel
+onMounted(() => {
+  loadData()
+  channel = supabase
+    .channel('dashboard-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'students' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty_subjects' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'activity_logs' }, loadData)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 function formatTime(ts) {
   if (!ts) return ''

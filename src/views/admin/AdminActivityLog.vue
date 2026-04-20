@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { supabase } from '@/lib/supabase.js'
 
 const logs        = ref([])
@@ -111,7 +111,15 @@ async function load() {
   logs.value = data || []
   loading.value = false
 }
-onMounted(load)
+let channel
+onMounted(() => {
+  load()
+  channel = supabase
+    .channel('activitylog-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'activity_logs' }, load)
+    .subscribe()
+})
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 function formatTime(ts) {
   if (!ts) return ''

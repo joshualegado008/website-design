@@ -161,7 +161,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { supabase } from '@/lib/supabase.js'
 
@@ -172,29 +172,25 @@ const scheduleRows = ref([])
 const events   = ref([])
 const grades   = ref([])
 
-onMounted(async () => {
+async function loadData() {
   const user = auth.state.user
   const role = auth.state.role
   const uid  = user?.id
 
   if (role === 'student') {
     const [subj, sched, evts, grds] = await Promise.all([
-      // Subjects for student's section
       supabase.from('faculty_subjects')
         .select('*, faculty:faculty_id(name)')
         .eq('section', user.section)
         .order('code'),
-      // Schedule rows
       supabase.from('faculty_subjects')
         .select('*')
         .eq('section', user.section)
         .order('code'),
-      // Events
       supabase.from('events')
         .select('*')
         .or(`owner_type.eq.all,and(owner_type.eq.student,owner_id.is.null),and(owner_type.eq.student,owner_id.eq.${uid})`)
         .order('date').limit(3),
-      // Grades
       supabase.from('grades')
         .select('*')
         .eq('student_id', uid),
@@ -219,7 +215,19 @@ onMounted(async () => {
     events.value       = evts.data || []
   }
   loading.value = false
+}
+
+let channel
+onMounted(() => {
+  loadData()
+  channel = supabase
+    .channel('dashboard-user-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty_subjects' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'grades' }, loadData)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 // Today's schedule — parse "MWF 7:30-8:30 AM" type strings
 const todayName = new Date().toLocaleDateString('en-US', { weekday:'long' })

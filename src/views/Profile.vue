@@ -238,7 +238,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { supabase } from '@/lib/supabase.js'
 
@@ -255,7 +255,7 @@ const academicHistory  = ref([])
 const nonAcademicHistory = ref([])
 const violations       = ref([])
 
-onMounted(async () => {
+async function loadData() {
   const user = auth.state.user
   const role = auth.state.role
 
@@ -291,7 +291,24 @@ onMounted(async () => {
   }
 
   loading.value = false
+}
+
+let channel
+onMounted(() => {
+  loadData()
+  channel = supabase
+    .channel('profile-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'grades' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'student_affiliations' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'student_skills' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'student_academic_history' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'student_nonacademic_history' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'student_violations' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty_subjects' }, loadData)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'students' }, loadData)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 // ── Computed fields ──────────────────────────────────────────
 const personalFields = computed(() => {

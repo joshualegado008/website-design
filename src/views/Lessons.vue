@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { supabase } from '@/lib/supabase.js'
 
@@ -69,7 +69,7 @@ const filterSubject = ref('')
 const filterStatus  = ref('')
 const search        = ref('')
 
-onMounted(async () => {
+async function loadData() {
   const uid  = auth.state.user?.id
   const role = auth.state.role
 
@@ -80,13 +80,22 @@ onMounted(async () => {
     .eq('owner_id', uid)
     .order('date', { ascending: false })
 
-  // Students only see Published lessons
   if (role === 'student') query = query.eq('status', 'Published')
 
   const { data } = await query
   lessons.value = data || []
   loading.value = false
+}
+
+let channel
+onMounted(() => {
+  loadData()
+  channel = supabase
+    .channel('lessons-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'lessons' }, loadData)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 const subjectList = computed(() => [...new Set(lessons.value.map(l => l.subject))].sort())
 

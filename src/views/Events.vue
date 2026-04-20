@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { supabase } from '@/lib/supabase.js'
 
@@ -104,9 +104,15 @@ const currentYear = ref(now.getFullYear())
 const currentMonth= ref(now.getMonth()) // 0-indexed
 const selectedDay = ref(null)
 
+let channel
 onMounted(async () => {
   await loadEvents()
+  channel = supabase
+    .channel('events-user-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, loadEvents)
+    .subscribe()
 })
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 async function loadEvents() {
   loading.value = true

@@ -152,7 +152,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { supabase } from '@/lib/supabase.js'
 import { logActivity } from '@/lib/activityLog.js'
 import { useAuthStore } from '@/store/auth.js'
@@ -244,7 +244,15 @@ async function load() {
   facultyList.value = fac.data || []
   loading.value = false
 }
-onMounted(load)
+let channel
+onMounted(() => {
+  load()
+  channel = supabase
+    .channel('subjects-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'faculty_subjects' }, load)
+    .subscribe()
+})
+onUnmounted(() => { channel && supabase.removeChannel(channel) })
 
 function openModal(s = null) {
   editing.value   = s
