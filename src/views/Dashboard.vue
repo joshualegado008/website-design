@@ -178,14 +178,13 @@ async function loadData() {
   const uid  = user?.id
 
   if (role === 'student') {
-    const [subj, sched, evts, grds] = await Promise.all([
-      supabase.from('faculty_subjects')
-        .select('*, faculty:faculty_id(name)')
-        .eq('section', user.section)
-        .order('code'),
-      supabase.from('faculty_subjects')
+    // Try schedules table first (personal schedule rows), then fall back
+    // to faculty_subjects by section — same logic as Scheduling.vue
+    const [schedResult, evts, grds] = await Promise.all([
+      supabase.from('schedules')
         .select('*')
-        .eq('section', user.section)
+        .eq('owner_type', 'student')
+        .eq('owner_id', uid)
         .order('code'),
       supabase.from('events')
         .select('*')
@@ -195,24 +194,52 @@ async function loadData() {
         .select('*')
         .eq('student_id', uid),
     ])
-    subjects.value     = subj.data || []
-    scheduleRows.value = sched.data || []
-    events.value       = evts.data || []
-    grades.value       = grds.data || []
+
+    if (schedResult.data && schedResult.data.length > 0) {
+      // Personal schedule rows exist — use them for both subjects and schedule
+      subjects.value     = schedResult.data
+      scheduleRows.value = schedResult.data
+    } else {
+      // No personal rows — fall back to faculty_subjects matched by section
+      const { data: subjData } = await supabase
+        .from('faculty_subjects')
+        .select('*, faculty:faculty_id(name)')
+        .eq('section', user.section)
+        .order('code')
+      subjects.value     = subjData || []
+      scheduleRows.value = subjData || []
+    }
+
+    events.value  = evts.data || []
+    grades.value  = grds.data || []
   } else {
-    const [subj, sched, evts] = await Promise.all([
-      supabase.from('faculty_subjects')
-        .select('*').eq('faculty_id', uid).order('code'),
-      supabase.from('faculty_subjects')
-        .select('*').eq('faculty_id', uid).order('code'),
+    // Try schedules table first, fallback to faculty_subjects — same as Scheduling.vue
+    const [schedResult, evts] = await Promise.all([
+      supabase.from('schedules')
+        .select('*')
+        .eq('owner_type', 'faculty')
+        .eq('owner_id', uid)
+        .order('code'),
       supabase.from('events')
         .select('*')
         .or(`owner_type.eq.all,and(owner_type.eq.faculty,owner_id.is.null),and(owner_type.eq.faculty,owner_id.eq.${uid})`)
         .order('date').limit(3),
     ])
-    subjects.value     = subj.data || []
-    scheduleRows.value = sched.data || []
-    events.value       = evts.data || []
+
+    if (schedResult.data && schedResult.data.length > 0) {
+      subjects.value     = schedResult.data
+      scheduleRows.value = schedResult.data
+    } else {
+      const { data: subjData } = await supabase
+        .from('faculty_subjects')
+        .select('*')
+        .eq('faculty_id', uid)
+        .order('code')
+      subjects.value     = subjData || []
+      scheduleRows.value = subjData || []
+    }
+
+    events.value = evts.data || []
   }
   loading.value = false
 }
