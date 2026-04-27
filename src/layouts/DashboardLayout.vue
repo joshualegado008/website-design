@@ -66,6 +66,9 @@
           <button class="s-nav-item" :class="{ active: rn === 'scheduling' }" @click="go('scheduling')">
             <i class="bi bi-clock-fill"></i><span>Scheduling</span>
           </button>
+          <button class="s-nav-item" :class="{ active: rn === 'faculty-grades' }" @click="go('faculty-grades')">
+            <i class="bi bi-award-fill"></i><span>Grade Management</span>
+          </button>
         </template>
       </nav>
       <div class="sidebar-footer">
@@ -131,7 +134,8 @@ const pageTitle = computed(() => {
     curriculum: 'Curriculum',
     lessons:    'Lessons',
     events:     'Events',
-    scheduling: 'Scheduling'
+    scheduling:     'Scheduling',
+    'faculty-grades': 'Grade Management'
   }
   return titles[route.name] || 'Dashboard'
 })
